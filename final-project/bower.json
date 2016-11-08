@@ -7,5 +7,18 @@
     "angular": "^1.5.8",
     "angular-ui-router": "^0.3.2",
     "ng-token-auth": "^0.0.29"
-  }
+  },
+  "homepage": "https://github.com/seanneale/final-project",
+  "authors": [
+    "seanneale <sean_neale@hotmail.co.uk>"
+  ],
+  "description": "",
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
 }
