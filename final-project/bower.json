@@ -1,0 +1,11 @@
+{
+  "name": "final-project",
+  "version": "0.0.1",
+  "main": "",
+  "private": true,
+  "dependencies": {
+    "angular": "^1.5.8",
+    "angular-ui-router": "^0.3.2",
+    "ng-token-auth": "^0.0.29"
+  }
+}

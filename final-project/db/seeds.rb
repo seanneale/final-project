@@ -13,7 +13,7 @@ dataSource = "http://jokecamp.github.io/epl-fantasy-geek/js/static-data.json"
 
 source = JSON.load(open(dataSource))
 
-test = User.create(username: 'sean')
+test = User.create(email: 'sean@couchpotato.com', password: '12345678', name: 'Sean')
 test.leagues.create(league_name: 'test_league')
 
 SourceTeam.create(fpl_id: source["teams"][0]["code"], name: source["teams"][0]["name"], badge_url: "https://platform-static-files.s3.amazonaws.com/premierleague/badges/t#{source["teams"][0]["code"]}.svg", home_colour_1: "red", home_colour_2: "white", away_colour_1: "gold", away_colour_2: "black")

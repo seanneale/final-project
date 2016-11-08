@@ -1,0 +1,17 @@
+app.controller('StaticPagesCtrl', ['$scope','$auth', function($scope,$auth){
+	
+	$scope.message = "Hello World!";
+
+	$scope.logout = function () {
+		$auth.signOut().then(function(resp) {
+			console.log(resp);
+		}).catch(function(resp) {
+			console.log(resp);
+		});
+	};
+
+	$scope.facebookLogin = function(){
+		console.log('fgyu')
+		$auth.authenticate('facebook');
+	}
+}]);
