@@ -1,4 +1,4 @@
-app.controller('StaticPagesCtrl', ['$scope','$auth', function($scope,$auth){
+app.controller('LoginPagesCtrl', ['$scope','$auth','$rootScope', function($scope,$auth,$rootScope){
 	
 	$scope.message = "Hello World!";
 
@@ -12,5 +12,10 @@ app.controller('StaticPagesCtrl', ['$scope','$auth', function($scope,$auth){
 
 	$scope.facebookLogin = function(){
 		$auth.authenticate('facebook');
-	}
+	};
+
+	$rootScope.$on('auth:login-success', function(ev, user){
+		alert('Welcome', user.email)
+	})
+
 }]);

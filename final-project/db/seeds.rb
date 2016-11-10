@@ -1,10 +1,10 @@
-# This file should contain all the record creation needed to seed the database with its default values.
-# The data can then be loaded with the rails db:seed command (or created alongside the database with db:setup).
-#
-# Examples:
-#
-#   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
-#   Character.create(name: 'Luke', movie: movies.first)
+# # This file should contain all the record creation needed to seed the database with its default values.
+# # The data can then be loaded with the rails db:seed command (or created alongside the database with db:setup).
+# #
+# # Examples:
+# #
+# #   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
+# #   Character.create(name: 'Luke', movie: movies.first)
 require 'rubygems'
 require 'json'
 require 'open-uri'
@@ -96,3 +96,110 @@ end
 	Round.create(date: date, active: false)
 end
 
+# # build an array which tracks the fixtures already assigned
+@tracker_array = [
+	[ true, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false] ,
+	[ false, true, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false] ,
+	[ false, false, true, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false] ,
+	[ false, false, false, true, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false] ,
+	[ false, false, false, false, true, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false] ,
+	[ false, false, false, false, false, true, false, false, false, false, false, false, false, false, false, false, false, false, false, false] ,
+	[ false, false, false, false, false, false, true, false, false, false, false, false, false, false, false, false, false, false, false, false] ,
+	[ false, false, false, false, false, false, false, true, false, false, false, false, false, false, false, false, false, false, false, false] ,
+	[ false, false, false, false, false, false, false, false, true, false, false, false, false, false, false, false, false, false, false, false] ,
+	[ false, false, false, false, false, false, false, false, false, true, false, false, false, false, false, false, false, false, false, false] ,
+	[ false, false, false, false, false, false, false, false, false, false, true, false, false, false, false, false, false, false, false, false] ,
+	[ false, false, false, false, false, false, false, false, false, false, false, true, false, false, false, false, false, false, false, false] ,
+	[ false, false, false, false, false, false, false, false, false, false, false, false, true, false, false, false, false, false, false, false] ,
+	[ false, false, false, false, false, false, false, false, false, false, false, false, false, true, false, false, false, false, false, false] ,
+	[ false, false, false, false, false, false, false, false, false, false, false, false, false, false, true, false, false, false, false, false] ,
+	[ false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, true, false, false, false, false] ,
+	[ false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, true, false, false, false] ,
+	[ false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, true, false, false] ,
+	[ false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, true, false] ,
+	[ false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, true] ,
+]
+# #find all rounds
+@rounds = Round.all
+# puts @rounds[0][:date]
+# puts @tracker_array[0].to_s
+# puts @tracker_array[1].to_s
+# puts @tracker_array[2].to_s
+# puts @tracker_array[3].to_s
+# #assign team names
+# @team1=SourceTeam.find_by(id: 1)
+# @team2=SourceTeam.find_by(id: 2)
+# @team3=SourceTeam.find_by(id: 3)
+# @team4=SourceTeam.find_by(id: 4)
+# @teams=[@team1,@team2,@team3,@team4]
+
+# @rounds[0].matches.create(played: false, background: false, home_team_picked: false, away_team_picked: false, home_team_score: 0, away_team_score: 0, home_team_id: @teams[0][:id], away_team_id: @teams[1][:id])
+
+# def fixture_generate
+# 	puts '.'
+# # pick two random numbers between 1 and 4
+# 	@rand_a = 1 + rand(4)
+# 	@rand_b = 1 + rand(4)
+# 	puts @rand_a
+# 	puts @rand_b
+# 	puts @tracker_array[@rand_a-1][@rand_b-1].to_s
+# # check they are different
+# 	if @rand_a == @rand_b
+# 		puts 'stop'
+# # check that the fixture doesn't exist
+# 	elsif @tracker_array[@rand_a-1][@rand_b-1]
+# 		puts 'else if'
+# 	end
+# # create it
+# end
+# fixture_generate
+
+# function to randomly select an element of an array and remove it and use it to generate a fixture
+
+def fixture_generate
+# change the function so that on each for loop the paired fixtures are not officially set until only false fixtures have been drawns
+	@rounds.each do |round|
+		@new_array = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20]
+		while @new_array.length > 0 do
+			puts @new_array.to_s
+			@rand_index = rand(@new_array.length)
+			a = @new_array.slice! @rand_index,1
+			@rand_index = rand(@new_array.length)
+			b = @new_array.slice! @rand_index,1
+			if a == b
+				@new_array.push a[0]
+				@new_array.push b[0]
+			elsif @tracker_array[a[0]-1][b[0]-1]
+				@new_array.push a[0]
+				@new_array.push b[0]				
+			else
+				@tracker_array[a[0]-1][b[0]-1] = true
+				# round.matches.create(played: false, background: false, home_team_picked: false, away_team_picked: false, home_team_score: 0, away_team_score: 0, home_team_id: a[0], away_team_id: b[0])
+			end
+			# puts @new_array.to_s
+		end
+	end
+	puts @tracker_array[0].to_s
+	puts @tracker_array[1].to_s
+	puts @tracker_array[2].to_s
+	puts @tracker_array[3].to_s
+	puts @tracker_array[4].to_s
+	puts @tracker_array[5].to_s
+	puts @tracker_array[6].to_s
+	puts @tracker_array[7].to_s
+	puts @tracker_array[8].to_s
+	puts @tracker_array[9].to_s
+	puts @tracker_array[10].to_s
+	puts @tracker_array[11].to_s
+	puts @tracker_array[12].to_s
+	puts @tracker_array[13].to_s
+	puts @tracker_array[14].to_s
+	puts @tracker_array[15].to_s
+	puts @tracker_array[16].to_s
+	puts @tracker_array[17].to_s
+	puts @tracker_array[18].to_s
+	puts @tracker_array[19].to_s
+	puts @tracker_array[20].to_s
+end
+
+fixture_generate

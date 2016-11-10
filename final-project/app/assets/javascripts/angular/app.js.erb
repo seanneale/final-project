@@ -1,7 +1,7 @@
 'use strict'; // Make sure you don't have syntax errors
 
 // var app = angular.module('appName', ['oneDependency']);
-var app = angular.module('final-project', ['ui.router','ng-token-auth']);
+var app = angular.module('final-project', ['ui.router','ng-token-auth','ui.bootstrap']);
 
 app.config(['$stateProvider', '$urlRouterProvider','$authProvider', function($stateProvider, $urlRouterProvider, $authProvider) {
 	$urlRouterProvider.otherwise('/');
@@ -9,13 +9,15 @@ app.config(['$stateProvider', '$urlRouterProvider','$authProvider', function($st
 	// Configure Angular Routes
 	$stateProvider
 	
+	//static page
 	.state({
 		name: 'index',
 		url: '/',
-		templateUrl: "<%= asset_path('static_pages/index.html') %>",
-		controller: 'StaticPagesCtrl'
+		templateUrl: "<%= asset_path('login_pages/index.html') %>",
+		controller: 'LoginPagesCtrl'
 	})
 
+	//login to app
 	.state({
 		name: 'signup',
 		url: '/signup',
@@ -28,6 +30,22 @@ app.config(['$stateProvider', '$urlRouterProvider','$authProvider', function($st
 		url: '/login',
 		templateUrl: "<%= asset_path('auth/login.html') %>",
 		controller: 'LoginCtrl'
+	})
+
+	//landing page after login
+	.state({
+		name: 'welcome',
+		url: '/welcome',
+		templateUrl: "<%= asset_path('main/welcome.html') %>",
+		controller: 'WelcomeCtrl'
+	})
+
+	//create new league
+	.state({
+		name: 'create_new',
+		url: '/create_new',
+		templateUrl: "<%= asset_path('main/create_new.html') %>",
+		controller: 'CreateNewCtrl'
 	})
 
     $authProvider.configure({

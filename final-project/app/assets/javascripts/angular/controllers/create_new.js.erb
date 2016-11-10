@@ -1,0 +1,26 @@
+app.controller('CreateNewCtrl', ['$scope','$auth','$location', "$http", function($scope,$auth,$location,$http){
+
+	$scope.getTeams = function(){
+		$http({
+			method: 'get',
+			url: '/api/source_teams'
+		}).then(function(resp){
+			$scope.pageBuild(resp.data);
+		})
+	}
+
+	$scope.getTeams();
+
+	$scope.pageBuild = function(resp){
+		resp.forEach(function(e){
+			console.log(e.name)
+			//create a new image element with source e.name
+			var newElem = "	<div><h1>" + e.name + "</h1><image src='" + e.badge_url + "'></div>"
+			//append to #teamsDisplay
+			$('#teamsDisplay').append(newElem);
+		});
+	}
+
+	
+
+}])
