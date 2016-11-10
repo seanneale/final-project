@@ -48,6 +48,46 @@ app.config(['$stateProvider', '$urlRouterProvider','$authProvider', function($st
 		controller: 'CreateNewCtrl'
 	})
 
+	//match screen
+	.state({
+		name: 'match',
+		url: '/match',
+		templateUrl: "<%= asset_path('main/match.html') %>",
+		controller: 'MatchCtrl'
+	})
+
+	//show squad
+	.state({
+		name: 'squad',
+		url: '/squad',
+		templateUrl: "<%= asset_path('main/squad.html') %>",
+		controller: 'SquadCtrl'
+	})
+
+	//show league table
+	.state({
+		name: 'league_table',
+		url: '/league_table',
+		templateUrl: "<%= asset_path('main/league_table.html') %>",
+		controller: 'LeagueTableCtrl'
+	})
+
+	//show fixtures and results
+	.state({
+		name: 'fixtures',
+		url: '/fixtures',
+		templateUrl: "<%= asset_path('main/fixtures.html') %>",
+		controller: 'FixturesCtrl'
+	})
+
+	//show stats
+	.state({
+		name: 'stats',
+		url: '/stats',
+		templateUrl: "<%= asset_path('main/stats.html') %>",
+		controller: 'StatsCtrl'
+	})
+
     $authProvider.configure({
 		// By default, you only need to configure apiUrl
 		// Note that if you put a '/' at the end of the link, there will be errors when calling the api
