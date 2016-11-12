@@ -1,3 +1,88 @@
-app.controller('SquadCtrl', ['$scope','$auth','$location', function($scope,$auth,$location){
+app.controller('SquadCtrl', ['$scope','$state','$stateParams','$auth','$location','$http', function($scope,$state,$stateParams,$auth,$location,$http){
 
+	$scope.players = []
+
+	var squadBuild = function(){
+		var id = $stateParams.game_team_id;
+		$http({
+			method: 'GET',
+			url: '/api/game_teams/' + id
+		}).success(function(resp){
+			playersBuild(resp)
+			console.log($scope.players)
+		})
+	}
+
+	var scopePlayersSort = function(){
+		$scope.players.sort(function(a,b){
+			if(a.squad_no < b.squad_no){
+				return -1;
+			} 
+			if(a.squad_no > b.squad_no){
+				return 1;
+			}
+			return 0;
+		})
+	}
+
+	$scope.changePlayerStatus = function(index){
+		$scope.players[index].picked = !$scope.players[index].picked;
+		var size = $scope.limitTeamSelection();
+		console.log(size)
+		if(size >= 11){
+			$scope.teamValidationClass = true;
+		}
+	};
+
+	$scope.limitTeamSelection = function(){
+		// console.log($scope.players);
+		var counter = 0;
+		for(var i = 0; i < $scope.players.length; i++){
+			if($scope.players[i].picked){
+				counter++;
+			}
+		}
+		return counter;
+	};
+
+	$scope.teamValidationClass = false;
+
+	var playersBuild = function(resp){
+		var game_players = resp.game_players;
+		var source_players = resp.source_players;
+		for(var i = 0; i < game_players.length; i ++){
+			if(source_players[i].squad_number){
+				player = {}
+				player.name = source_players[i].first_name + ' ' + source_players[i].last_name
+				player.squad_no = source_players[i].squad_number
+				if(source_players[i].position == 1) {
+					player.position = 'GK';
+				} else if (source_players[i].position == 2) {
+					player.position = 'D';
+				} else if (source_players[i].position == 3) {
+					player.position = 'M';
+				} else if (source_players[i].position == 4) {
+					player.position = 'F';
+				}
+				player.gk_a = source_players[i].goalkeeping_ability.toFixed(1)
+				player.d_a = source_players[i].defending_ability.toFixed(1)
+				player.f_a = source_players[i].attacking_ability.toFixed(1)
+				player.apps = game_players[i].appearances
+				player.goals = game_players[i].season_goals_scored
+				var pass_percent = game_players[i].season_succesful_passes / game_players[i].season_attempted_passes
+				player.pass = (pass_percent * 100).toFixed(1)
+				player.assists = game_players[i].season_assists
+				player.picked = false;
+				player.image = source_players[i].image_url
+				$scope.players.push(player)
+			}
+		}
+		scopePlayersSort();
+	}
+
+	var init = function(){
+		squadBuild();
+	}
+
+	init()
 }])

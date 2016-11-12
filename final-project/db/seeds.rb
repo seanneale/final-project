@@ -266,10 +266,22 @@ def match_testing id
 		# puts Match.find(id)[:control]
 		if clock == 45
 			# puts 'half time'
+			if Match.find(id)[:control]
+				Match.find(id).match_events.create(event_type: 2, event_text: 'Half time, time for a break', team_id: Match.find(id)[:home_team_id])
+			else
+				Match.find(id).match_events.create(event_type: 2, event_text: 'Half time, time for a break', team_id: Match.find(id)[:away_team_id])
+			end
 			Match.find(id).update(control: false)
 			Match.find(id).update(possesion_zone: 4)
 		elsif clock == 90
 			# puts 'full time'
+			if Match.find(id)[:home_team_score] > Match.find(id)[:away_team_score]
+				Match.find(id).match_events.create(event_type: 3, event_text: 'Full time, The home team have won', team_id: Match.find(id)[:home_team_id])
+			elsif Match.find(id)[:home_team_score] < Match.find(id)[:away_team_score]
+				Match.find(id).match_events.create(event_type: 3, event_text: 'Full time, the away team have won', team_id: Match.find(id)[:away_team_id])
+			else
+				Match.find(id).match_events.create(event_type: 3, event_text: "Full time, they'll have to settle for a draw", team_id: Match.find(id)[:away_team_id])
+			end
 		else
 			pass home_team_squad,away_team_squad,id
 		end

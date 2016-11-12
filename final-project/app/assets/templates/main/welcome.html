@@ -4,4 +4,18 @@
 
 <p>I would like to show the team the User controls, the league name and the status of each league: awaiting team selection, match run  etc...</p>
 
-<a href="/#/create_new"><button class="btn btn-primary">Create New Game</button></a>
+<div id="gameList">
+	<ul>
+		<li ng-repeat="league in leagues">
+			<a ui-sref="squad({game_team_id: 8})">
+				<button class="btn btn-primary" ng-click="squadBuild($index)">
+					<h4>{{league.league_name}}</h4>
+					<h5>{{league.id}}</h5>
+				</button>
+			</a>
+		</li>
+	</ul>
+</div>
+
+<button class="btn btn-primary" ng-click="squadBuild()">Create New Game</button>
+<a href="/#/create_new"></a>

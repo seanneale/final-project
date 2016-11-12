@@ -59,10 +59,17 @@ app.config(['$stateProvider', '$urlRouterProvider','$authProvider', function($st
 	//show squad
 	.state({
 		name: 'squad',
-		url: '/squad',
+		url: '/squad/:game_team_id',
 		templateUrl: "<%= asset_path('main/squad.html') %>",
 		controller: 'SquadCtrl'
 	})
+
+	// .state({
+	// 	name: 'squad',
+	// 	url: '/squad/',
+	// 	templateUrl: "<%= asset_path('main/squad.html') %>",
+	// 	controller: 'SquadCtrl'
+	// })
 
 	//show league table
 	.state({

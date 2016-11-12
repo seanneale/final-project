@@ -1,3 +1,27 @@
 // Place all the styles related to the main_pages controller here.
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
+
+
+#teamDisplay li {
+	list-style-type: none;
+	margin: 5px;
+	max-width: 150px;
+	display: inline-block;
+}
+
+#teamDisplay ul li p {
+	max-width: 150px;
+}
+
+#teamDisplay ul li div {
+	display: inline-block;
+}
+
+.playerImage {
+	max-width: 100px;
+}
+
+#teamDisplay{
+	background: rgb(102,153,0);
+}

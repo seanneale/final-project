@@ -1,6 +1,5 @@
 class Api::LeaguesController < ApplicationController
 	def index
-		puts current_user
-		render json: current_user.leagues
+		render json: User.find(params[:user_id]).leagues
 	end
 end

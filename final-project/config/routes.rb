@@ -6,7 +6,12 @@ Rails.application.routes.draw do
 
 	namespace :api do
 		resources :source_teams, only: [:index]
-		resources :leagues, except: [:new, :edit]
+		resources :user do
+			resources :leagues, except: [:new, :edit] do
+				resources :game_teams 
+			end
+		end
+		resources :game_teams
 	end
 
 end

@@ -1,6 +1,8 @@
-app.controller('LoginPagesCtrl', ['$scope','$auth','$rootScope', function($scope,$auth,$rootScope){
+app.controller('LoginPagesCtrl', ['$scope','$auth','$rootScope', "$http", function($scope,$auth,$rootScope,$http){
 	
 	$scope.message = "Hello World!";
+
+	console.log($scope.user);
 
 	$scope.logout = function () {
 		$auth.signOut().then(function(resp) {
@@ -17,5 +19,6 @@ app.controller('LoginPagesCtrl', ['$scope','$auth','$rootScope', function($scope
 	$rootScope.$on('auth:login-success', function(ev, user){
 		alert('Welcome', user.email)
 	})
+
 
 }]);
