@@ -56,41 +56,42 @@ app.config(['$stateProvider', '$urlRouterProvider','$authProvider', function($st
 		controller: 'MatchCtrl'
 	})
 
+
+	.state({
+		name: 'header',
+		abstract: true,
+		templateUrl: "<%= asset_path('main/header.html') %>",
+		controller: 'HeaderCtrl'
+	})
+
 	//show squad
 	.state({
-		name: 'squad',
+		name: 'header.squad',
 		url: '/squad/:game_team_id',
 		templateUrl: "<%= asset_path('main/squad.html') %>",
 		controller: 'SquadCtrl'
 	})
 
-	// .state({
-	// 	name: 'squad',
-	// 	url: '/squad/',
-	// 	templateUrl: "<%= asset_path('main/squad.html') %>",
-	// 	controller: 'SquadCtrl'
-	// })
-
 	//show league table
 	.state({
-		name: 'league_table',
-		url: '/league_table',
+		name: 'header.league_table',
+		url: '/league_table/:league_id',
 		templateUrl: "<%= asset_path('main/league_table.html') %>",
 		controller: 'LeagueTableCtrl'
 	})
 
 	//show fixtures and results
 	.state({
-		name: 'fixtures',
-		url: '/fixtures',
+		name: 'header.fixtures',
+		url: '/fixtures/:league_id',
 		templateUrl: "<%= asset_path('main/fixtures.html') %>",
 		controller: 'FixturesCtrl'
 	})
 
 	//show stats
 	.state({
-		name: 'stats',
-		url: '/stats',
+		name: 'header.stats',
+		url: '/stats/:league_id',
 		templateUrl: "<%= asset_path('main/stats.html') %>",
 		controller: 'StatsCtrl'
 	})

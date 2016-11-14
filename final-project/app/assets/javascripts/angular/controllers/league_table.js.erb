@@ -1,3 +1,23 @@
-app.controller('LeagueTableCtrl', ['$scope','$auth','$location', function($scope,$auth,$location){
+app.controller('LeagueTableCtrl', ['$scope','$state','$stateParams','$auth','$location','$http', function($scope,$state,$stateParams,$auth,$location,$http){
+
+	$scope.league_id = $stateParams.league_id;
+
+	$scope.teams = [];
+
+	var getTable = function(){
+		$http({
+			method: 'get',
+			url: '/api/leagues/' + $scope.league_id,
+		}).success(function(resp){
+			console.log(resp);
+			$scope.teams = resp.table
+		})
+	}
+
+	var init = function(){
+		getTable();
+	}
+
+	init();
 
 }])

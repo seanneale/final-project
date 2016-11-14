@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161110075006) do
+ActiveRecord::Schema.define(version: 20161113033741) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -19,16 +19,17 @@ ActiveRecord::Schema.define(version: 20161110075006) do
     t.integer  "game_team_id"
     t.integer  "source_player_id"
     t.boolean  "available"
-    t.integer  "injury_type"
-    t.integer  "recovery_length"
-    t.integer  "season_shots"
-    t.integer  "season_goals_scored"
-    t.integer  "season_assists"
-    t.integer  "season_attempted_passes"
-    t.integer  "season_succesful_passes"
-    t.integer  "season_interceptions"
-    t.datetime "created_at",              null: false
-    t.datetime "updated_at",              null: false
+    t.integer  "injury_type",             default: 0
+    t.integer  "recovery_length",         default: 0
+    t.integer  "season_shots",            default: 0
+    t.integer  "season_goals_scored",     default: 0
+    t.integer  "season_assists",          default: 0
+    t.integer  "season_attempted_passes", default: 0
+    t.integer  "season_succesful_passes", default: 0
+    t.integer  "season_interceptions",    default: 0
+    t.datetime "created_at",                          null: false
+    t.datetime "updated_at",                          null: false
+    t.integer  "appearances",             default: 0
     t.index ["game_team_id"], name: "index_game_players_on_game_team_id", using: :btree
     t.index ["source_player_id"], name: "index_game_players_on_source_player_id", using: :btree
   end
@@ -55,13 +56,15 @@ ActiveRecord::Schema.define(version: 20161110075006) do
     t.integer  "user_id"
     t.integer  "league_id"
     t.integer  "source_team_id"
-    t.integer  "win"
-    t.integer  "draw"
-    t.integer  "loss"
-    t.integer  "goals_for"
-    t.integer  "goals_against"
-    t.datetime "created_at",     null: false
-    t.datetime "updated_at",     null: false
+    t.integer  "win",             default: 0
+    t.integer  "draw",            default: 0
+    t.integer  "loss",            default: 0
+    t.integer  "goals_for",       default: 0
+    t.integer  "goals_against",   default: 0
+    t.integer  "goal_difference", default: 0
+    t.integer  "points",          default: 0
+    t.datetime "created_at",                  null: false
+    t.datetime "updated_at",                  null: false
     t.index ["league_id"], name: "index_game_teams_on_league_id", using: :btree
     t.index ["source_team_id"], name: "index_game_teams_on_source_team_id", using: :btree
     t.index ["user_id"], name: "index_game_teams_on_user_id", using: :btree
@@ -86,31 +89,31 @@ ActiveRecord::Schema.define(version: 20161110075006) do
 
   create_table "match_stats", force: :cascade do |t|
     t.integer  "match_id"
-    t.integer  "shots"
-    t.integer  "goals_scored"
-    t.integer  "assists"
-    t.integer  "attempted_passes"
-    t.integer  "succesful_passes"
-    t.integer  "interceptions"
-    t.datetime "created_at",       null: false
-    t.datetime "updated_at",       null: false
+    t.integer  "shots",            default: 0
+    t.integer  "goals_scored",     default: 0
+    t.integer  "assists",          default: 0
+    t.integer  "attempted_passes", default: 0
+    t.integer  "succesful_passes", default: 0
+    t.integer  "interceptions",    default: 0
+    t.datetime "created_at",                   null: false
+    t.datetime "updated_at",                   null: false
     t.index ["match_id"], name: "index_match_stats_on_match_id", using: :btree
   end
 
   create_table "matches", force: :cascade do |t|
     t.integer  "round_id"
-    t.boolean  "played"
-    t.boolean  "background"
-    t.boolean  "home_team_picked"
-    t.boolean  "away_team_picked"
+    t.boolean  "played",           default: false
+    t.boolean  "background",       default: false
+    t.boolean  "home_team_picked", default: false
+    t.boolean  "away_team_picked", default: false
     t.integer  "home_team_id"
     t.integer  "away_team_id"
-    t.integer  "home_team_score"
-    t.integer  "away_team_score"
-    t.datetime "created_at",       null: false
-    t.datetime "updated_at",       null: false
-    t.boolean  "control"
-    t.integer  "possesion_zone"
+    t.integer  "home_team_score",  default: 0
+    t.integer  "away_team_score",  default: 0
+    t.datetime "created_at",                       null: false
+    t.datetime "updated_at",                       null: false
+    t.boolean  "control",          default: true
+    t.integer  "possesion_zone",   default: 4
     t.index ["round_id"], name: "index_matches_on_round_id", using: :btree
   end
 

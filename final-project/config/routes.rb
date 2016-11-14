@@ -12,6 +12,10 @@ Rails.application.routes.draw do
 			end
 		end
 		resources :game_teams
+		resources :leagues
+		resources :game_players do
+			resources :match_stats
+		end
 	end
 
 end

@@ -1,3 +1,91 @@
-app.controller('FixturesCtrl', ['$scope','$auth','$location', function($scope,$auth,$location){
+app.controller('FixturesCtrl', ['$scope','$state','$stateParams','$auth','$location','$http', function($scope,$state,$stateParams,$auth,$location,$http){
 
+	$scope.league_id = $stateParams.league_id;
+
+	$scope.fixtures = [];
+
+	$scope.rounds= [];
+
+	$scope.activeWeek = 0;
+
+	$scope.showWeek = 0;
+
+	$scope.showFixtures = []
+
+	$scope.nextWeekDisable = false;
+
+	$scope.prevWeekDisable = false;
+
+	$scope.date
+
+
+	var getFixtures = function(){
+		$http({
+			method: 'get',
+			url: '/api/leagues/' + $scope.league_id,
+		}).success(function(resp){
+			console.log(resp)
+			findActiveRound(resp.rounds);
+			$scope.rounds = resp.rounds
+			$scope.date = $scope.rounds[$scope.showWeek].date
+			$scope.fixtures = resp.fixtures
+			$scope.showFixtures = $scope.fixtures[$scope.showWeek]
+			nextWeekBtnCheck();
+			prevWeekBtnCheck();
+		})
+	}
+
+	var findActiveRound = function(rounds){
+		for(var i = 0; i < rounds.length; i++){
+			if(rounds[i].active){
+				$scope.activeWeek = i;
+				// $scope.showWeek = i;
+				$scope.showWeek = 36;
+			}
+		}
+	}
+
+	// var showFixtures = function(){
+
+	// }
+
+	$scope.changeWeekPrev = function(){
+		if($scope.showWeek > 0){
+			$scope.showWeek -= 1;
+			$scope.showFixtures = $scope.fixtures[$scope.showWeek]
+		}
+		nextWeekBtnCheck();
+		prevWeekBtnCheck();
+	}
+
+	$scope.changeWeekNext = function(){
+		if($scope.showWeek < 37){
+			$scope.showWeek += 1;
+			$scope.showFixtures = $scope.fixtures[$scope.showWeek]
+		}
+		nextWeekBtnCheck();
+		prevWeekBtnCheck();
+	}
+
+	var nextWeekBtnCheck = function(){
+		if($scope.showWeek >= 37){
+			$scope.nextWeekDisable = true;
+		} else {
+			$scope.nextWeekDisable = false;
+		}
+	}
+
+	var prevWeekBtnCheck = function(){
+		if($scope.showWeek <= 0){
+			$scope.prevWeekDisable = true;
+		} else {
+			$scope.prevWeekDisable = false;
+		}
+	}
+
+	var init = function(){
+		getFixtures();
+	}
+
+	init()
 }])

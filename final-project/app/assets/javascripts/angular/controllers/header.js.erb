@@ -1,0 +1,34 @@
+app.controller('HeaderCtrl', ['$scope','$state','$stateParams','$auth','$location','$http', function($scope,$state,$stateParams,$auth,$location,$http){
+
+	$scope.game_team_id = $stateParams.game_team_id
+
+	// $scope.$watch('user.id', function (nv, ov) {
+	// 	test(); 
+	// });
+
+	// $scope.leagues = []
+
+	// var leaguesBuild = function(){
+	// 	if ($scope.user.id) {
+	// 		var id = $scope.user.id
+	// 		$http({
+	// 			method: 'GET',
+	// 			url: '/api/user/' + id + '/leagues'
+	// 		}).success(function(resp){
+	// 			$scope.leagues = []
+	// 			for(var i = 0; i < resp.leagues.length; i++){
+	// 				$scope.leagues.push(resp.leagues[i]);
+	// 				$scope.leagues[i].game_team_id = resp.game_teams[i].id;
+	// 				console.log($scope.leagues[i].game_team_id);
+	// 			}
+	// 		})
+	// 	}
+	// };
+
+	// var init = function () {
+	// 	leaguesBuild();
+	// };
+
+	// init();
+
+}])

@@ -1,44 +1,30 @@
 app.controller('WelcomeCtrl', ['$scope','$auth','$location', '$http','$state','$stateParams', function($scope,$auth,$location,$http,$state,$stateParams){
 
 	$scope.$watch('user.id', function (nv, ov) {
-		test(); 
+		leaguesBuild(); 
 	});
-
-	$scope.squadBuild = function(index){
-		var league_id = $scope.leagues[index].id
-		var user_id = $scope.user.id
-		$http({
-			method: 'GET',
-			url: '/api/user/' + user_id + '/leagues/' + league_id + '/game_teams'
-		}).success(function(resp){
-			// console.log(resp.id);
-			// send response to squad page
-			// go to squad page
-			$state.go('squad',{game_team_id: resp.id});
-		})
-	}
 
 	$scope.leagues = []
 
-	var test = function(){
+	var leaguesBuild = function(){
 		if ($scope.user.id) {
 			var id = $scope.user.id
 			$http({
 				method: 'GET',
 				url: '/api/user/' + id + '/leagues'
 			}).success(function(resp){
-				// $scope.leagues = resp
 				$scope.leagues = []
-				for(var i = 0; i < resp.length; i++){
-					$scope.leagues.push(resp[i]);
-					// console.log(resp[i].id)
+				for(var i = 0; i < resp.leagues.length; i++){
+					$scope.leagues.push(resp.leagues[i]);
+					$scope.leagues[i].game_team_id = resp.game_teams[i].id;
 				}
+				console.log($scope.leagues)
 			})
 		}
 	};
 
 	var init = function () {
-		test();
+		leaguesBuild();
 	};
 
 	init();

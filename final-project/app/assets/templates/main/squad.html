@@ -1,10 +1,9 @@
-
 <div class="row">
 	<div class="col-xs-10 col-xs-offset-1">
 		<h1>Squad</h1>
 		<div class="row">
 			<div class="col-xs-6">
-				<table class="table">
+				<table class="squad">
 					<thead>
 						<tr>
 							<th>Picked</th>
@@ -56,44 +55,52 @@
 					</tbody>
 				</table>
 			</div>
-			<div class="col-xs-6" id="teamDisplay">
-				<div class="row" id="GK">
-					<ul class="text-center">
-						<li ng-repeat="player in players | filter:{ position: 'GK', picked: true }">
-							<div>
-								<img class="playerImage" ng-src="{{player.image}}">
-								<p>{{player.name}}</p>
-							</div>
-						</li>
-					</ul>
+			<div class="col-xs-6">
+				<div class="row" id="teamDisplay">
+					<div class="row">
+						<div class="row" id="GK">
+							<ul class="text-center">
+								<li ng-repeat="player in players | filter:{ position: 'GK', picked: true }">
+									<div>
+										<img class="playerImage" ng-src="{{player.image}}">
+										<p>{{player.name}}</p>
+									</div>
+								</li>
+							</ul>
+						</div>
+						<div class="row" id="D">
+							<ul class="text-center">
+								<li ng-repeat="player in players | filter:{ position: 'D', picked: true }">
+									<div><img class="playerImage" ng-src="{{player.image}}"><p>{{player.name}}</p></div>
+								</li>
+							</ul>
+						</div>
+						<div class="row" id="M">
+							<ul class="text-center">
+								<li ng-repeat="player in players | filter:{ position: 'M', picked: true }">
+									<div>
+										<img class="playerImage" ng-src="{{player.image}}">
+										<p>{{player.name}}</p>
+									</div>
+								</li>
+							</ul>
+						</div>
+						<div class="row" id="F">
+							<ul class="text-center">
+								<li ng-repeat="player in players | filter:{ position: 'F', picked: true }">
+									<div>
+										<img class="playerImage" ng-src="{{player.image}}">
+										<p>{{player.name}}</p>
+									</div>
+								</li>
+							</ul>
+						</div>
+					</div>
 				</div>
-				<div class="row" id="D">
-					<ul class="text-center">
-						<li ng-repeat="player in players | filter:{ position: 'D', picked: true }">
-							<div><img class="playerImage" ng-src="{{player.image}}"><p>{{player.name}}</p></div>
-						</li>
-					</ul>
+				<div class="row">
+					<button type='button' id='submitTeamSelection' ng-click='submitTeamSelection()'>Submit Team Selection</button>
 				</div>
-				<div class="row" id="M">
-					<ul class="text-center">
-						<li ng-repeat="player in players | filter:{ position: 'M', picked: true }">
-							<div>
-								<img class="playerImage" ng-src="{{player.image}}">
-								<p>{{player.name}}</p>
-							</div>
-						</li>
-					</ul>
-				</div>
-				<div class="row" id="F">
-					<ul class="text-center">
-						<li ng-repeat="player in players | filter:{ position: 'F', picked: true }">
-							<div>
-								<img class="playerImage" ng-src="{{player.image}}">
-								<p>{{player.name}}</p>
-							</div>
-						</li>
-					</ul>
-				</div>
+			</div>
 			</div>
 		</div>
 	</div>

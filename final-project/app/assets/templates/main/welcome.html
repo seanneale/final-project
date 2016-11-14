@@ -7,7 +7,7 @@
 <div id="gameList">
 	<ul>
 		<li ng-repeat="league in leagues">
-			<a ui-sref="squad({game_team_id: 8})">
+			<a ui-sref="header.squad({game_team_id: {{league.game_team_id}}})">
 				<button class="btn btn-primary" ng-click="squadBuild($index)">
 					<h4>{{league.league_name}}</h4>
 					<h5>{{league.id}}</h5>

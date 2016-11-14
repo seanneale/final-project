@@ -1,6 +1,6 @@
 app.controller('SquadCtrl', ['$scope','$state','$stateParams','$auth','$location','$http', function($scope,$state,$stateParams,$auth,$location,$http){
 
-	$scope.players = []
+	$scope.players = [];
 
 	var squadBuild = function(){
 		var id = $stateParams.game_team_id;
@@ -9,7 +9,6 @@ app.controller('SquadCtrl', ['$scope','$state','$stateParams','$auth','$location
 			url: '/api/game_teams/' + id
 		}).success(function(resp){
 			playersBuild(resp)
-			console.log($scope.players)
 		})
 	}
 
@@ -28,7 +27,6 @@ app.controller('SquadCtrl', ['$scope','$state','$stateParams','$auth','$location
 	$scope.changePlayerStatus = function(index){
 		$scope.players[index].picked = !$scope.players[index].picked;
 		var size = $scope.limitTeamSelection();
-		console.log(size)
 		if(size >= 11){
 			$scope.teamValidationClass = true;
 		}
@@ -53,6 +51,7 @@ app.controller('SquadCtrl', ['$scope','$state','$stateParams','$auth','$location
 		for(var i = 0; i < game_players.length; i ++){
 			if(source_players[i].squad_number){
 				player = {}
+				player.id = game_players[i].id
 				player.name = source_players[i].first_name + ' ' + source_players[i].last_name
 				player.squad_no = source_players[i].squad_number
 				if(source_players[i].position == 1) {
@@ -78,6 +77,25 @@ app.controller('SquadCtrl', ['$scope','$state','$stateParams','$auth','$location
 			}
 		}
 		scopePlayersSort();
+	}
+
+	$scope.submitTeamSelection =function(){
+		$scope.squad = []
+		// add requirement for eleven players, one in each position
+		for(var i = 0; i < $scope.players.length; i++){
+			if($scope.players[i].picked){
+				$scope.squad.push($scope.players[i].id);
+			}
+		}
+		for(var i = 0; i < $scope.squad.length; i++){
+			console.log($scope.squad[i]);
+			$http({
+				method: 'post',
+				url: '/api/game_players/' + $scope.squad[i] + '/match_stats'
+			}).success(function(resp){
+				console.log(resp);
+			})
+		}
 	}
 
 	var init = function(){
