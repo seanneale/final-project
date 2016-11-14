@@ -79,22 +79,47 @@ app.controller('SquadCtrl', ['$scope','$state','$stateParams','$auth','$location
 		scopePlayersSort();
 	}
 
+	// checking that each position has at least one player in it
+	var positionCheck = function(position){
+		if(position != 'GK'){
+			for(var i = 0; i < $scope.squad.length; i++){
+				if($scope.squad[i].position == position){
+					return true
+				}
+			}
+		} else {
+			gkCheck = []
+			for(var i = 0; i < $scope.squad.length; i++){
+				if($scope.squad[i].position == 'GK'){
+					gkCheck.push($scope.squad[i]);
+				}
+			}
+			if (gkCheck.length == 1) {
+				return true
+			}
+		} 
+	}
+
 	$scope.submitTeamSelection =function(){
 		$scope.squad = []
 		// add requirement for eleven players, one in each position
 		for(var i = 0; i < $scope.players.length; i++){
 			if($scope.players[i].picked){
-				$scope.squad.push($scope.players[i].id);
+				$scope.squad.push($scope.players[i]);
 			}
 		}
-		for(var i = 0; i < $scope.squad.length; i++){
-			console.log($scope.squad[i]);
-			$http({
-				method: 'post',
-				url: '/api/game_players/' + $scope.squad[i] + '/match_stats'
-			}).success(function(resp){
-				console.log(resp);
-			})
+		if($scope.squad.length == 11 && positionCheck('GK') && positionCheck('D') && positionCheck('M') && positionCheck('F')){
+			for(var i = 0; i < $scope.squad.length; i++){
+				// console.log($scope.squad[i]);
+				$http({
+					method: 'post',
+					url: '/api/game_players/' + $scope.squad[i].id + '/match_stats'
+				}).success(function(resp){
+					console.log(resp);
+				})
+			}
+		} else {
+			console.log('put some error reporting in here')
 		}
 	}
 
