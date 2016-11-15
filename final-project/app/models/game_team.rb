@@ -1,5 +1,5 @@
 class GameTeam < ApplicationRecord
-	belongs_to	:user
+	belongs_to	:user, optional: true
 	belongs_to	:league
 	belongs_to	:source_team
 	has_many	:game_players

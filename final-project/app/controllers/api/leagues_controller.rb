@@ -36,6 +36,9 @@ private
 			# puts team[:goals_against]
 			puts gd = team[:goals_for] - team[:goals_against]
 			team.update(points: points, goal_difference: gd)
+			puts team.errors.messages
+			puts team[:points]
+			puts team[:goal_difference]
 		end
 	end
 
