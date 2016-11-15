@@ -1,3 +1,20 @@
-app.controller('MatchCtrl', ['$scope','$auth','$location', function($scope,$auth,$location){
+app.controller('MatchCtrl', ['$scope','$state','$stateParams','$auth','$location','$http', function($scope,$state,$stateParams,$auth,$location,$http){
+	console.log('asdfghjkl')
 
+	console.log($stateParams.match_id)
+
+	var matchGet = function(){
+		$http({
+			method: 'get',
+			url: '/api/matches/' + $stateParams.match_id
+		}).success(function(resp){
+			console.log(resp)
+		})
+	}
+
+	var init = function(){
+		matchGet();
+	}
+
+	init();
 }])

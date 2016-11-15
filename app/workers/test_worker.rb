@@ -3,5 +3,6 @@ class TestWorker
 
 	def perform
 		puts 'qwertyuiopswexdcvgbuji'
+		TestBWorker.perform_async()
 	end
 end

@@ -14,5 +14,6 @@ class ChangeActiveRoundWorker
 				Round.find(round[:id] + 1).update(active: true)
 			end
 		end
+		AutopickWorker.perform_async()
 	end
 end

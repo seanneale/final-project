@@ -1,5 +1,5 @@
 class Api::LeaguesController < ApplicationController
-	before_action :table_update
+	before_action :table_update, only: [:show]
 
 	def index
 		response = {}
@@ -13,6 +13,13 @@ class Api::LeaguesController < ApplicationController
 	end
 
 	def show
+		# TestWorker.perform_async()
+		# TestBWorker.perform_async()
+		# FixtureWorker.perform_async()
+		# MarkMatchesAsBackgroundWorker.perform_async()
+		# ChangeActiveRoundWorker.perform_async()
+		# AutopickWorker.perform_async()
+		# MatchWorker.perform_async()
 		response = {}
 		response[:league] = League.find(params[:id])
 		response[:rounds] = League.find(params[:id]).rounds.all

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161113033741) do
+ActiveRecord::Schema.define(version: 20161115052804) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -84,6 +84,7 @@ ActiveRecord::Schema.define(version: 20161113033741) do
     t.string   "event_text"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer  "time"
     t.index ["match_id"], name: "index_match_events_on_match_id", using: :btree
   end
 

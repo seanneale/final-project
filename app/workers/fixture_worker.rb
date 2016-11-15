@@ -2,12 +2,15 @@ class FixtureWorker
 	include Sidekiq::Worker
 
 	def perform
+		puts '.................................'
 		fixture_generate
+		MarkMatchesAsBackgroundWorker.perform_async()
 	end
 
 	# needs to be changed to general from seed
 	def fixture_generate
 
+		User.first.leagues.first.rounds[0].update(active: true)
 		half_schedule = make_fixture_array
 		@rounds = User.first.leagues.first.rounds
 		team_base_id = User.first.leagues.first.game_teams.order('id')[0][:id]

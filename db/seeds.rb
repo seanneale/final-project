@@ -41,9 +41,9 @@ SourceTeam.all.each do |team|
 	team.game_teams.create(league_id: League.pluck(:id).sample)
 end
 
-GameTeam.all.each do |team|
-	team.update(win: rand(0..10), draw: rand(0..10), loss: rand(0..10),goals_for: rand(10..50),goals_against: rand(10..50))
-end
+# GameTeam.all.each do |team|
+# 	team.update(win: rand(0..10), draw: rand(0..10), loss: rand(0..10),goals_for: rand(10..50),goals_against: rand(10..50))
+# end
 
 GameTeam.find_by(league_id: 1, source_team_id: 8).update(user_id: 1)
 
@@ -88,7 +88,7 @@ source["elements"].each do |player|
 		end
 		goalkeeping_ability = 0
 	end
-	SourcePlayer.create(first_name: player["first_name"], last_name: player["second_name"], name: player["web_name"], position: player["element_type"], attacking_ability: attacking_ability, defending_ability: defending_ability, goalkeeping_ability: goalkeeping_ability, source_team_id: team_id, squad_number: player["squad_number"], form_adjustment: 0, image_url: "https://platform-static-files.s3.amazonaws.com/premierleague/photos/players/250x250/p#{player["code"]}.png", available: true, injury_remain: 0, injury_id: 1)
+	SourcePlayer.create(first_name: player["first_name"], last_name: player["second_name"], name: player["web_name"], position: player["element_type"], attacking_ability: attacking_ability, defending_ability: defending_ability, goalkeeping_ability: goalkeeping_ability, source_team_id: team_id, squad_number: player["squad_number"], form_adjustment: 0, image_url: "https://platform-static-files.s3.amazonaws.com/premierleague/photos/players/110x140/p#{player["code"]}.png", available: true, injury_remain: 0, injury_id: 1)
 end
 
 SourcePlayer.all.each do |player|

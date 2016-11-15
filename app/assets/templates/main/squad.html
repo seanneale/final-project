@@ -17,7 +17,7 @@
 					</thead>
 					<tbody>
 						<tr ng-repeat="player in players | filter:{ position: 'GK'}">
-							<th><div class="form-check"><label class="form-check-label"><input type="checkbox" ng-check="player.picked" ng-model="player.picked" ng-click="changePlayerStatus($index)" ng-disabled="teamValidationClass"></th></label></div>
+							<th><div class="form-check"><label class="form-check-label"><input type="checkbox" ng-check="player.picked" ng-model="player.picked" ng-click="changePlayerStatus(player)" ng-disabled="teamValidationClass"></th></label></div>
 							<th>{{ player.squad_no }}</th>
 							<th>{{ player.name }}</th>
 							<th>{{ player.position }}</th>
@@ -26,7 +26,7 @@
 							<th>{{ player.f_a }}</th>
 						</tr>
 						<tr ng-repeat="player in players | filter:{ position: 'D'}">
-							<th><div class="form-check"><label class="form-check-label"><input type="checkbox" ng-check="player.picked" ng-model="player.picked" ng-click="changePlayerStatus($index)" ng-disabled="teamValidationClass"></th></label></div>
+							<th><div class="form-check"><label class="form-check-label"><input type="checkbox" ng-check="player.picked" ng-model="player.picked" ng-click="changePlayerStatus(player)" ng-disabled="teamValidationClass"></th></label></div>
 							<th>{{ player.squad_no }}</th>
 							<th>{{ player.name }}</th>
 							<th>{{ player.position }}</th>
@@ -35,7 +35,7 @@
 							<th>{{ player.f_a }}</th>
 						</tr>
 						<tr ng-repeat="player in players | filter:{ position: 'M'}">
-							<th><div class="form-check"><label class="form-check-label"><input type="checkbox" ng-check="player.picked" ng-model="player.picked" ng-click="changePlayerStatus($index)" ng-disabled="teamValidationClass"></th></label></div>
+							<th><div class="form-check"><label class="form-check-label"><input type="checkbox" ng-check="player.picked" ng-model="player.picked" ng-click="changePlayerStatus(player)" ng-disabled="teamValidationClass"></th></label></div>
 							<th>{{ player.squad_no }}</th>
 							<th>{{ player.name }}</th>
 							<th>{{ player.position }}</th>
