@@ -99,7 +99,7 @@ app.config(['$stateProvider', '$urlRouterProvider','$authProvider', function($st
 	// prematch screen
 	.state({
 		name: 'pre_match',
-		url: '/pre_match',
+		url: '/pre_match/:match_id',
 		templateUrl: "<%= asset_path('main/pre_match.html') %>",
 		controller: 'PreMatchCtrl'
 	})

@@ -2,13 +2,16 @@ app.controller('SquadCtrl', ['$scope','$state','$stateParams','$auth','$location
 
 	$scope.players = [];
 
+	$scope.matchId
+
 	var squadBuild = function(){
 		var id = $stateParams.game_team_id;
 		$http({
 			method: 'GET',
 			url: '/api/game_teams/' + id
 		}).success(function(resp){
-			playersBuild(resp)
+			$scope.matchId = resp.match.id;
+			playersBuild(resp);
 		})
 	}
 
@@ -72,10 +75,16 @@ app.controller('SquadCtrl', ['$scope','$state','$stateParams','$auth','$location
 				player.assists = game_players[i].season_assists
 				player.picked = false;
 				player.image = source_players[i].image_url
+				createPlayerImage(player.image);
 				$scope.players.push(player)
 			}
 		}
 		scopePlayersSort();
+	}
+
+	var createPlayerImage = function(image){
+		img = new Image();
+		img.src = image
 	}
 
 	// checking that each position has at least one player in it
@@ -116,8 +125,9 @@ app.controller('SquadCtrl', ['$scope','$state','$stateParams','$auth','$location
 				method: 'post',
 				url: '/api/game_teams/' + id + '/match_stats',
 				params: $scope.squad_ids
-			}).success(function(resp){
-				console.log(resp);
+			}).success(function(){
+				console.log();
+				$state.go('pre_match', { match_id: $scope.matchId});
 			})
 		} else {
 			console.log('put some error reporting in here')

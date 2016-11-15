@@ -1,1 +1,11 @@
 <h1>Match</h1>
+
+<button class="btn btn-primary" ng-click='startGame()'>
+	Start Game
+</button>
+
+<ul>
+	<li ng-repeat='event in showMatchEvents' ng-model='showMatchEvents'>
+		event.event_text
+	</li>
+</ul>

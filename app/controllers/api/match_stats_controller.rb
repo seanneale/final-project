@@ -33,7 +33,7 @@ class Api::MatchStatsController < ApplicationController
 		TestWorker.perform_async()
 		MatchWorker.perform_async()
 		# render json: picked
-		render json: 'Complete'
+		# render json: 'Complete'
 	end
 
 end

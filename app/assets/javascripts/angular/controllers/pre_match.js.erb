@@ -1,3 +1,5 @@
 app.controller('PreMatchCtrl', ['$scope','$state','$stateParams','$auth','$location','$http', function($scope,$state,$stateParams,$auth,$location,$http){
-	console.log('qwertyuiop')
+
+	$scope.matchId = $stateParams.match_id;
+
 }])

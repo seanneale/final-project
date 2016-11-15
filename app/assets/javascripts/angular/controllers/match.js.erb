@@ -3,17 +3,43 @@ app.controller('MatchCtrl', ['$scope','$state','$stateParams','$auth','$location
 
 	console.log($stateParams.match_id)
 
+	var storeMatchEvents = []
+	$scope.showMatchEvents = []
+	var i = 0
+
+	$scope.startGame = function(){
+		console.log('Starting Game')
+		recursive();
+	}
+
+
+// change the setup so that the all events are loaded buut visible then unhide them as the clock ticks
+	var recursive = function(){
+		if(i < storeMatchEvents.length){
+			setTimeout(function(){
+				$scope.showMatchEvents.push(storeMatchEvents[i])
+				console.log($scope.showMatchEvents[i]);
+				i++;
+				recursive();
+			},1000)
+		} else {
+			console.log('done')
+		}
+	}
+
 	var matchGet = function(){
 		$http({
 			method: 'get',
 			url: '/api/matches/' + $stateParams.match_id
 		}).success(function(resp){
-			console.log(resp)
+			storeMatchEvents = resp.match_events
+			console.log(storeMatchEvents)
 		})
 	}
 
 	var init = function(){
 		matchGet();
+		console.log(storeMatchEvents)
 	}
 
 	init();
