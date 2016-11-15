@@ -18,6 +18,8 @@ gem 'devise_token_auth'
 gem 'omniauth'
 gem 'omniauth-facebook'
 gem 'bower'
+gem 'sidekiq'
+gem 'whenever', :require => false
 gem 'rails_12factor', group: :production
 # See https://github.com/rails/execjs#readme for more supported runtimes
 # gem 'therubyracer', platforms: :ruby
