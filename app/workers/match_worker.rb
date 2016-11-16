@@ -58,6 +58,7 @@ class MatchWorker
 				else
 					Match.find(id).match_events.create(time: @clock, event_type: 3, event_text: "Full time, they'll have to settle for a draw", team_id: Match.find(id)[:away_team_id], zone: Match.find(id)[:possesion_zone])
 				end
+				match_result id
 			else
 				if @clock == 46
 					Match.find(id).match_events.create(time: @clock, event_type: 6, event_text: @away_team_name + ' are kicking off', team_id: Match.find(id)[:away_team_id], zone: Match.find(id)[:possesion_zone])
@@ -241,5 +242,41 @@ class MatchWorker
 			forward[:attacking_ability]/(forward[:attacking_ability] + home_team_squad[:goalkeeper][0][:goalkeeping_ability])
 		end
 	end
+
+	def match_result id
+		# for both teams
+		match = Match.find(id)
+		home_team = GameTeam.find(match[:home_team_id])
+		away_team = GameTeam.find(match[:away_team_id])
+		# work out who won or draw 
+		if match[home_team_score] > match[:away_team_score]
+			# h add a win
+			home_team.update(win: home_team[:win] + 1)
+			# a add a defeat
+			away_team.update(loss: away_team[:loss] + 1)
+		elsif match[home_team_score] < match[:away_team_score]
+			# h add a defeat
+			home_team.update(loss: home_team[:loss] + 1)
+			# a add a win
+			away_team.update(win: away_team[:win] + 1)
+		else
+			# h add a draw
+			home_team.update(draw: home_team[:draw] + 1)
+			# h add a draw
+			away_team.update(draw: away_team[:draw] + 1)
+		end
+		# h add a app
+		home_team.update(games_played: home_team[:games_played] + 1)
+		# a add a app
+		away_team.update(games_played: away_team[:games_played] + 1)
+		# h add h goals scored to goals for
+		home_team.update(goals_for: home_team[:goals_for] + match[:home_team_score])
+		# h add a goals scored to goals against
+		home_team.update(goals_against: home_team[:goals_against] + match[:away_team_score])
+		# a add a goals scored to goals for
+		away_team.update(goals_for: away_team[:goals_for] + match[:away_team_score])
+		# a add h goals scored to goals against
+		away_team.update(goals_against: away_team[:goals_against] + match[:home_team_score])
+		end
 
 end
