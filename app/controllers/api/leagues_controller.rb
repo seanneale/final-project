@@ -21,6 +21,7 @@ class Api::LeaguesController < ApplicationController
 		# AutopickWorker.perform_async()
 		# MatchWorker.perform_async()
 		response = {}
+		response[:source_teams]=SourceTeam.all
 		response[:league] = League.find(params[:id])
 		response[:rounds] = League.find(params[:id]).rounds.all
 		response[:fixtures] = []

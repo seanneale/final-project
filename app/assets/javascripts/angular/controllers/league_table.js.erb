@@ -4,6 +4,8 @@ app.controller('LeagueTableCtrl', ['$scope','$state','$stateParams','$auth','$lo
 
 	$scope.teams = [];
 
+	var sourceTeams
+
 	var getTable = function(){
 		$http({
 			method: 'get',
@@ -11,7 +13,16 @@ app.controller('LeagueTableCtrl', ['$scope','$state','$stateParams','$auth','$lo
 		}).success(function(resp){
 			console.log(resp);
 			$scope.teams = resp.table
+			sourceTeams = resp.source_teams
+			addName();
 		})
+	}
+
+	var addName = function(){
+		for(var i = 0; i < $scope.teams.length; i++){
+			sourceId = $scope.teams[i].source_team_id
+			$scope.teams[i].source_team_name = sourceTeams[sourceId - 1].name
+		}
 	}
 
 	var init = function(){

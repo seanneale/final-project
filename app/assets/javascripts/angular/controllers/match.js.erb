@@ -1,9 +1,8 @@
 app.controller('MatchCtrl', ['$scope','$state','$stateParams','$auth','$location','$http', function($scope,$state,$stateParams,$auth,$location,$http){
-	console.log('asdfghjkl')
 
-	console.log($stateParams.match_id)
+	var leagueId
 
-	var storeMatchEvents = []
+	$scope.storeMatchEvents = []
 	$scope.showMatchEvents = []
 	var i = 0
 
@@ -12,13 +11,20 @@ app.controller('MatchCtrl', ['$scope','$state','$stateParams','$auth','$location
 		recursive();
 	}
 
+	$scope.goToResults = function(){
+		console.log('qwertyuiop');
+		$state.go('header.fixtures', { league_id: leagueId });
+	}
+
 
 // change the setup so that the all events are loaded buut visible then unhide them as the clock ticks
 	var recursive = function(){
-		if(i < storeMatchEvents.length){
+		if(i < $scope.storeMatchEvents.length){
 			setTimeout(function(){
-				$scope.showMatchEvents.push(storeMatchEvents[i])
-				console.log($scope.showMatchEvents[i]);
+				$scope.showMatchEvents.push($scope.storeMatchEvents[i])
+				console.log($scope.storeMatchEvents[i].show);
+				$scope.storeMatchEvents[i].show = true;
+				console.log($scope.storeMatchEvents[i].show);
 				i++;
 				recursive();
 			},1000)
@@ -32,14 +38,17 @@ app.controller('MatchCtrl', ['$scope','$state','$stateParams','$auth','$location
 			method: 'get',
 			url: '/api/matches/' + $stateParams.match_id
 		}).success(function(resp){
-			storeMatchEvents = resp.match_events
-			console.log(storeMatchEvents)
+			console.log(resp)
+			leagueId = resp.league_id
+			$scope.storeMatchEvents = resp.match_events
+			for(var i = 0; i < $scope.storeMatchEvents.length; i++){
+				$scope.storeMatchEvents[i].show = false;
+			}
 		})
 	}
 
 	var init = function(){
 		matchGet();
-		console.log(storeMatchEvents)
 	}
 
 	init();
