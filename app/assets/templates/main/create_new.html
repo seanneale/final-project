@@ -1,6 +1,21 @@
 <div class="container">
-<h1>create new</h1>
+	<h1>create new</h1>
 
-<div id="teamsDisplay">
-</div>
+	<div class="row" ng-show="stageView">
+		<div class="col-xs-6">
+			<form ng-submit="saveLeagueName()">
+				<div class="form-group">
+					<input class="text-muted form-control" type="text" placeholder="League name..." ng-model="leagueName">
+					<button class="btn" type="submit">Submit</button>
+				</div>
+			</form>
+		</div>
+	</div>
+
+	<div class="row" id="teamsDisplay" ng-hide="stageView">
+		<div class="col-xs-3" ng-repeat="team in teams" ng-click="teamChoice($index)">
+			<img src="{{team.badge_url}}" class="img-responsive badgeImage">
+			<h5>{{team.name}}</h5>
+		</div>
+	</div>
 </div>

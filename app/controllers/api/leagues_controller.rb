@@ -1,5 +1,5 @@
 class Api::LeaguesController < ApplicationController
-	before_action :table_update
+	before_action :table_update, only: [:show]
 
 	def index
 		response = {}
@@ -12,10 +12,43 @@ class Api::LeaguesController < ApplicationController
 		render json: response
 	end
 
+	def create
+		# create new league
+		new_league = User.find(params[:user_id]).leagues.create(league_name: params[:league_name])
+		puts new_league[:id]
+		# create new game teams
+		SourceTeam.all.each do |team|
+			team.game_teams.create(league_id: new_league[:id])
+		end
+		# create new game players
+		SourcePlayer.all.each do |player|
+			game_team_id = player.source_team.game_teams.find_by(league_id: new_league[:id])[:id]
+			player.game_players.create(game_team_id: game_team_id)
+		end
+		# create new rounds
+		(0..37).each do |week|
+			date = Date.new(2016,8,13) + week * 7
+			new_league.rounds.create(date: date, active: false)
+		end
+		# link user to chosen game team
+		new_team = GameTeam.find_by(league_id: new_league[:id], source_team_id: params[:game_team_id])
+		new_team.update(user_id: params[:user_id])
+		FixtureWorker.perform_async(new_league[:id])
+		render json: new_team
+	end
+
 	def show
+		# TestWorker.perform_async()
+		# TestBWorker.perform_async()
+		# FixtureWorker.perform_async()
+		# MarkMatchesAsBackgroundWorker.perform_async()
+		# ChangeActiveRoundWorker.perform_async()
+		# AutopickWorker.perform_async()
+		# MatchWorker.perform_async()
 		response = {}
+		response[:source_teams]=SourceTeam.all
 		response[:league] = League.find(params[:id])
-		response[:rounds] = League.find(params[:id]).rounds.all
+		response[:rounds] = League.find(params[:id]).rounds.all.order('id')
 		response[:fixtures] = []
 		response[:rounds].each do |round|
 			response[:fixtures].push round.matches.all

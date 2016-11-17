@@ -2,13 +2,18 @@ app.controller('SquadCtrl', ['$scope','$state','$stateParams','$auth','$location
 
 	$scope.players = [];
 
+	$scope.matchId
+
 	var squadBuild = function(){
 		var id = $stateParams.game_team_id;
+		console.log(id)
 		$http({
 			method: 'GET',
 			url: '/api/game_teams/' + id
 		}).success(function(resp){
-			playersBuild(resp)
+			console.log(resp)
+			$scope.matchId = resp.match.id;
+			playersBuild(resp);
 		})
 	}
 
@@ -24,8 +29,7 @@ app.controller('SquadCtrl', ['$scope','$state','$stateParams','$auth','$location
 		})
 	}
 
-	$scope.changePlayerStatus = function(index){
-		$scope.players[index].picked = !$scope.players[index].picked;
+	$scope.changePlayerStatus = function(player){
 		var size = $scope.limitTeamSelection();
 		if(size >= 11){
 			$scope.teamValidationClass = true;
@@ -73,10 +77,16 @@ app.controller('SquadCtrl', ['$scope','$state','$stateParams','$auth','$location
 				player.assists = game_players[i].season_assists
 				player.picked = false;
 				player.image = source_players[i].image_url
+				createPlayerImage(player.image);
 				$scope.players.push(player)
 			}
 		}
 		scopePlayersSort();
+	}
+
+	var createPlayerImage = function(image){
+		img = new Image();
+		img.src = image
 	}
 
 	// checking that each position has at least one player in it
@@ -102,22 +112,25 @@ app.controller('SquadCtrl', ['$scope','$state','$stateParams','$auth','$location
 
 	$scope.submitTeamSelection =function(){
 		$scope.squad = []
+		$scope.squad_ids = []
 		// add requirement for eleven players, one in each position
 		for(var i = 0; i < $scope.players.length; i++){
 			if($scope.players[i].picked){
 				$scope.squad.push($scope.players[i]);
+				$scope.squad_ids.push($scope.players[i].id)
 			}
 		}
 		if($scope.squad.length == 11 && positionCheck('GK') && positionCheck('D') && positionCheck('M') && positionCheck('F')){
-			for(var i = 0; i < $scope.squad.length; i++){
-				// console.log($scope.squad[i]);
-				$http({
-					method: 'post',
-					url: '/api/game_players/' + $scope.squad[i].id + '/match_stats'
-				}).success(function(resp){
-					console.log(resp);
-				})
-			}
+			console.log($scope.squad_ids);
+			var id = $stateParams.game_team_id
+			$http({
+				method: 'post',
+				url: '/api/game_teams/' + id + '/match_stats',
+				params: $scope.squad_ids
+			}).success(function(){
+				console.log();
+				$state.go('pre_match', { match_id: $scope.matchId});
+			})
 		} else {
 			console.log('put some error reporting in here')
 		}

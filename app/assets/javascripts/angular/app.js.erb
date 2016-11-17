@@ -51,7 +51,7 @@ app.config(['$stateProvider', '$urlRouterProvider','$authProvider', function($st
 	//match screen
 	.state({
 		name: 'match',
-		url: '/match',
+		url: '/match/:match_id',
 		templateUrl: "<%= asset_path('main/match.html') %>",
 		controller: 'MatchCtrl'
 	})
@@ -67,7 +67,7 @@ app.config(['$stateProvider', '$urlRouterProvider','$authProvider', function($st
 	//show squad
 	.state({
 		name: 'header.squad',
-		url: '/squad/:game_team_id',
+		url: '/squad/:game_team_id/:league_id',
 		templateUrl: "<%= asset_path('main/squad.html') %>",
 		controller: 'SquadCtrl'
 	})
@@ -75,7 +75,7 @@ app.config(['$stateProvider', '$urlRouterProvider','$authProvider', function($st
 	//show league table
 	.state({
 		name: 'header.league_table',
-		url: '/league_table/:league_id',
+		url: '/league_table/:game_team_id/:league_id',
 		templateUrl: "<%= asset_path('main/league_table.html') %>",
 		controller: 'LeagueTableCtrl'
 	})
@@ -83,7 +83,7 @@ app.config(['$stateProvider', '$urlRouterProvider','$authProvider', function($st
 	//show fixtures and results
 	.state({
 		name: 'header.fixtures',
-		url: '/fixtures/:league_id',
+		url: '/fixtures/:game_team_id/:league_id',
 		templateUrl: "<%= asset_path('main/fixtures.html') %>",
 		controller: 'FixturesCtrl'
 	})
@@ -94,6 +94,14 @@ app.config(['$stateProvider', '$urlRouterProvider','$authProvider', function($st
 		url: '/stats/:league_id',
 		templateUrl: "<%= asset_path('main/stats.html') %>",
 		controller: 'StatsCtrl'
+	})
+
+	// prematch screen
+	.state({
+		name: 'pre_match',
+		url: '/pre_match/:match_id',
+		templateUrl: "<%= asset_path('main/pre_match.html') %>",
+		controller: 'PreMatchCtrl'
 	})
 
     $authProvider.configure({

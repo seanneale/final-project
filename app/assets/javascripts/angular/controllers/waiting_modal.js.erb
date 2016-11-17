@@ -1,0 +1,9 @@
+app.controller('WaitingModalCtrl', function ($scope, $uibModal, $log, $document) {
+
+	$scope.open = function () {
+		var modalInstance = $uibModal.open({
+			templateUrl: 'waiting_modal.html',
+			controller: 'ModalInstanceCtrl'
+		});
+	};	
+});

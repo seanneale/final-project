@@ -6,13 +6,14 @@
 
 		<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 			<ul class="nav navbar-nav">
-				<!-- <li><a ui-sref="header.squad({game_team_id: {{game_team_id}} })">Team Selection</a></li> -->
-				<li><a ui-sref="header.league_table">League Table</a></li>
-				<li><a ui-sref="header.fixtures">Fixtures</a></li>
-				<li><a ui-sref="header.stats">Stats</a></li>
+				<li><a ui-sref="header.squad({game_team_id: {{game_team_id}}, league_id: {{league_id}} })">Team Selection</a></li>
+				<li><a ui-sref="header.league_table({game_team_id: {{game_team_id}}, league_id: {{league_id}} })">League Table</a></li>
+				<li><a ui-sref="header.fixtures({game_team_id: {{game_team_id}}, league_id: {{league_id}} })">Fixtures</a></li>
+				<!-- <li><a ui-sref="header.stats">Stats</a></li> -->
 			</ul>
 			<ul class="nav navbar-nav navbar-right">
 				<li><a ui-sref="welcome">Change Game</a></li>
+				<li><a ui-sref="index" ng-click="logout()">Logout</a></li>
 			</ul>
 		</div>
 	</div>
