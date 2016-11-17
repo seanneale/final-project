@@ -41,9 +41,9 @@ SourceTeam.all.each do |team|
 	team.game_teams.create(league_id: League.pluck(:id).sample)
 end
 
-GameTeam.all.each do |team|
-	team.update(win: rand(0..10), draw: rand(0..10), loss: rand(0..10),goals_for: rand(10..50),goals_against: rand(10..50))
-end
+# GameTeam.all.each do |team|
+# 	team.update(win: rand(0..10), draw: rand(0..10), loss: rand(0..10),goals_for: rand(10..50),goals_against: rand(10..50))
+# end
 
 GameTeam.find_by(league_id: 1, source_team_id: 8).update(user_id: 1)
 
@@ -88,7 +88,7 @@ source["elements"].each do |player|
 		end
 		goalkeeping_ability = 0
 	end
-	SourcePlayer.create(first_name: player["first_name"], last_name: player["second_name"], name: player["web_name"], position: player["element_type"], attacking_ability: attacking_ability, defending_ability: defending_ability, goalkeeping_ability: goalkeeping_ability, source_team_id: team_id, squad_number: player["squad_number"], form_adjustment: 0, image_url: "https://platform-static-files.s3.amazonaws.com/premierleague/photos/players/250x250/p#{player["code"]}.png", available: true, injury_remain: 0, injury_id: 1)
+	SourcePlayer.create(first_name: player["first_name"], last_name: player["second_name"], name: player["web_name"], position: player["element_type"], attacking_ability: attacking_ability, defending_ability: defending_ability, goalkeeping_ability: goalkeeping_ability, source_team_id: team_id, squad_number: player["squad_number"], form_adjustment: 0, image_url: "https://platform-static-files.s3.amazonaws.com/premierleague/photos/players/110x140/p#{player["code"]}.png", available: true, injury_remain: 0, injury_id: 1)
 end
 
 SourcePlayer.all.each do |player|
@@ -100,3 +100,103 @@ end
 	test.leagues.first.rounds.create(date: date, active: false)
 end
 
+test.leagues.first.rounds.first.update(active: true)
+
+	def fixture_generate league_id
+
+		# User.first.leagues.first.rounds[0].update(active: true)
+		League.find(league_id).rounds.order('id')[0].update(active: true)
+		half_schedule = make_fixture_array
+		# @rounds = User.first.leagues.first.rounds
+		@rounds = League.find(league_id).rounds
+		# team_base_id = User.first.leagues.first.game_teams.order('id')[0][:id]
+		team_base_id = League.find(league_id).game_teams.order('id')[0][:id]
+		# team_ids = User.first.leagues.first.game_teams.order('id').pluck('id').shuffle!
+		team_ids = League.find(league_id).game_teams.order('id').pluck('id').shuffle!
+		# team_ids
+		(0..18).each do |round|
+			half_schedule[round].each do |match|
+				# puts match.to_s
+				if match[0] == match[1]
+					if round % 2 == 0
+						@rounds[round].matches.create(played: false, background: false, home_team_picked: false, away_team_picked: false, home_team_score: 0, away_team_score: 0, home_team_id: team_ids[match[0]], away_team_id: team_ids[19])
+					else
+						newMatch = @rounds[round].matches.create(played: false, background: false, home_team_picked: false, away_team_picked: false, home_team_score: 0, away_team_score: 0, home_team_id: team_ids[19], away_team_id: team_ids[match[0]])
+					end	
+				else
+					newMatch = @rounds[round].matches.create(played: false, background: false, home_team_picked: false, away_team_picked: false, home_team_score: 0, away_team_score: 0, home_team_id: team_ids[match[0]], away_team_id: team_ids[match[1]])
+				end
+			end
+		end
+		(0..18).each do |round|
+			half_schedule[round].each do |match|
+				if match[0] == match[1]
+					if round % 2 == 0
+						@rounds[round + 19].matches.create(played: false, background: false, home_team_picked: false, away_team_picked: false, home_team_score: 0, away_team_score: 0, home_team_id: team_ids[19], away_team_id: team_ids[match[0]])
+					else
+						@rounds[round + 19].matches.create(played: false, background: false, home_team_picked: false, away_team_picked: false, home_team_score: 0, away_team_score: 0, home_team_id: team_ids[match[0]], away_team_id: team_ids[19])
+					end	
+				else
+					@rounds[round + 19].matches.create(played: false, background: false, home_team_picked: false, away_team_picked: false, home_team_score: 0, away_team_score: 0, home_team_id: team_ids[match[1]], away_team_id: team_ids[match[0]])
+				end
+			end
+		end
+
+	end
+
+	def make_fixture_array
+		@test_array = [
+			[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19] ,
+			[2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,1] ,
+			[3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,1,2] ,
+			[4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,1,2,3] ,
+			[5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,1,2,3,4] ,
+			[6,7,8,9,10,11,12,13,14,15,16,17,18,19,1,2,3,4,5] ,
+			[7,8,9,10,11,12,13,14,15,16,17,18,19,1,2,3,4,5,6] ,
+			[8,9,10,11,12,13,14,15,16,17,18,19,1,2,3,4,5,6,7] ,
+			[9,10,11,12,13,14,15,16,17,18,19,1,2,3,4,5,6,7,8] ,
+			[10,11,12,13,14,15,16,17,18,19,1,2,3,4,5,6,7,8,9] ,
+			[11,12,13,14,15,16,17,18,19,1,2,3,4,5,6,7,8,9,10] ,
+			[12,13,14,15,16,17,18,19,1,2,3,4,5,6,7,8,9,10,11] ,
+			[13,14,15,16,17,18,19,1,2,3,4,5,6,7,8,9,10,11,12] ,
+			[14,15,16,17,18,19,1,2,3,4,5,6,7,8,9,10,11,12,13] ,
+			[15,16,17,18,19,1,2,3,4,5,6,7,8,9,10,11,12,13,14] ,
+			[16,17,18,19,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15] ,
+			[17,18,19,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16] ,
+			[18,19,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17] ,
+			[19,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18] ,
+		]
+		fixture_array = []
+		# find all i,j where they are equal banana
+		(1..19).each do |banana|
+			i = 0
+			j = 0
+			round_array = []
+			@test_array.each do |element|
+				# puts element.to_s
+				j = 0
+				element.each do |element|
+					if element == banana
+						round_array.push [i,j]
+					end
+					j += 1
+				end
+				i += 1
+			end
+			round_array.each do |dupe|
+				if dupe[0] == dupe[1]
+				elsif round_array.index [dupe[1],dupe[0]]
+					round_array.slice!(round_array.index([dupe[1],dupe[0]]),1)
+				end
+				if banana % 2 == 0
+					temp = dupe[0]
+					dupe[0] = dupe[1]
+					dupe[1] = temp
+				end
+			end
+			fixture_array.push round_array
+		end
+		fixture_array
+	end
+
+	fixture_generate 1

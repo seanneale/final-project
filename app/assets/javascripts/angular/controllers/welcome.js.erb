@@ -13,6 +13,7 @@ app.controller('WelcomeCtrl', ['$scope','$auth','$location', '$http','$state','$
 				method: 'GET',
 				url: '/api/user/' + id + '/leagues'
 			}).success(function(resp){
+				console.log(resp);
 				$scope.leagues = []
 				for(var i = 0; i < resp.leagues.length; i++){
 					$scope.leagues.push(resp.leagues[i]);

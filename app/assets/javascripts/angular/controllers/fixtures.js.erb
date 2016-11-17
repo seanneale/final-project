@@ -1,5 +1,7 @@
 app.controller('FixturesCtrl', ['$scope','$state','$stateParams','$auth','$location','$http', function($scope,$state,$stateParams,$auth,$location,$http){
 
+	// check all ten games if they are all played then show them as results not fixtures
+
 	$scope.league_id = $stateParams.league_id;
 
 	$scope.fixtures = [];
@@ -18,42 +20,61 @@ app.controller('FixturesCtrl', ['$scope','$state','$stateParams','$auth','$locat
 
 	$scope.date
 
+	$scope.fixturesShow = true
+
+	var sourceTeams
+
+	var gameSourceTeamDiff
 
 	var getFixtures = function(){
 		$http({
 			method: 'get',
 			url: '/api/leagues/' + $scope.league_id,
 		}).success(function(resp){
-			console.log(resp)
+			// console.log(resp)
 			findActiveRound(resp.rounds);
 			$scope.rounds = resp.rounds
 			$scope.date = $scope.rounds[$scope.showWeek].date
-			$scope.fixtures = resp.fixtures
+			$scope.fixtures = resp.fixtures;
+			sourceTeams = resp.source_teams
+			gameSourceTeamDiff = findingMinID(resp.table)
+			addName();
 			$scope.showFixtures = $scope.fixtures[$scope.showWeek]
+			resultsCheck();
 			nextWeekBtnCheck();
 			prevWeekBtnCheck();
 		})
+	}
+
+	var resultsCheck = function(){
+		counter = 0;
+		for(var i = 0; i < $scope.showFixtures.length; i++){
+			if($scope.showFixtures[i].played == true){
+				counter++;
+			}
+		}
+		if(counter == 10){
+			$scope.fixturesShow = false;
+		} else {
+			$scope.fixturesShow = true;
+		}
 	}
 
 	var findActiveRound = function(rounds){
 		for(var i = 0; i < rounds.length; i++){
 			if(rounds[i].active){
 				$scope.activeWeek = i;
-				// $scope.showWeek = i;
-				$scope.showWeek = 36;
+				$scope.showWeek = i;
 			}
 		}
 	}
-
-	// var showFixtures = function(){
-
-	// }
 
 	$scope.changeWeekPrev = function(){
 		if($scope.showWeek > 0){
 			$scope.showWeek -= 1;
 			$scope.showFixtures = $scope.fixtures[$scope.showWeek]
 		}
+		resultsCheck();
 		nextWeekBtnCheck();
 		prevWeekBtnCheck();
 	}
@@ -63,6 +84,7 @@ app.controller('FixturesCtrl', ['$scope','$state','$stateParams','$auth','$locat
 			$scope.showWeek += 1;
 			$scope.showFixtures = $scope.fixtures[$scope.showWeek]
 		}
+		resultsCheck();
 		nextWeekBtnCheck();
 		prevWeekBtnCheck();
 	}
@@ -81,6 +103,34 @@ app.controller('FixturesCtrl', ['$scope','$state','$stateParams','$auth','$locat
 		} else {
 			$scope.prevWeekDisable = false;
 		}
+	}
+
+	var addName = function(){
+		for(var i = 0; i < $scope.fixtures.length; i++){
+			// console.log('Round: ' + i)
+			// console.log($scope.fixtures[i])
+			for(var j = 0; j < $scope.fixtures[i].length; j++){
+				// console.log($scope.fixtures[i][j].id);
+				$scope.fixtures[i][j].home_team_name = findTeamName($scope.fixtures[i][j].home_team_id - gameSourceTeamDiff)
+				$scope.fixtures[i][j].away_team_name = findTeamName($scope.fixtures[i][j].away_team_id - gameSourceTeamDiff)
+			}
+		}
+	}
+
+	var findTeamName = function(id){
+		// console.log(id)
+		// find the lowest id value of the game_team id
+		return sourceTeams[id-1].name;
+	}
+
+	var findingMinID = function(gameTeamArray){
+		min = 999999999999999
+		for(var i = 0; i < gameTeamArray.length; i++){
+			if(gameTeamArray[i].id < min){
+				min = gameTeamArray[i].id
+			}
+		}
+		return min - 1
 	}
 
 	var init = function(){

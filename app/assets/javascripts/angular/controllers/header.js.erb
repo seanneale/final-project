@@ -1,6 +1,16 @@
 app.controller('HeaderCtrl', ['$scope','$state','$stateParams','$auth','$location','$http', function($scope,$state,$stateParams,$auth,$location,$http){
 
-	$scope.game_team_id = $stateParams.game_team_id
+	$scope.game_team_id = $state.params.game_team_id;
+	console.log($state);
+	$scope.league_id = $state.params.league_id;
+
+	$scope.logout = function () {
+		$auth.signOut().then(function(resp) {
+			console.log(resp);
+		}).catch(function(resp) {
+			console.log(resp);
+		});
+	};
 
 	// $scope.$watch('user.id', function (nv, ov) {
 	// 	test(); 

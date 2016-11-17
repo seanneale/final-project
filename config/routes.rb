@@ -11,11 +11,11 @@ Rails.application.routes.draw do
 				resources :game_teams 
 			end
 		end
-		resources :game_teams
-		resources :leagues
-		resources :game_players do
+		resources :game_teams do
 			resources :match_stats
 		end
+		resources :leagues
+		resources :matches
 	end
 
 end

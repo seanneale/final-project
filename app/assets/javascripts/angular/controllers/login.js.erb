@@ -1,11 +1,11 @@
-app.controller('LoginCtrl', ['$scope','$auth', '$location', function($scope,$auth,$location){
+app.controller('LoginCtrl', ['$scope','$auth', '$location','$state', function($scope,$auth,$location,$state){
 	$scope.login = function () {
 		$auth.submitLogin($scope.loginForm).
 			then(function(resp) {
 				// handle success response
 				console.log(resp);
 				// redirect back to root when registration succesfull 
-				$location.path('/');
+				$state.go('welcome');
 		}).
 		catch(function(resp) {
 			// handle error response

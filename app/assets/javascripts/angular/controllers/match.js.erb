@@ -1,3 +1,57 @@
-app.controller('MatchCtrl', ['$scope','$auth','$location', function($scope,$auth,$location){
+app.controller('MatchCtrl', ['$scope','$state','$stateParams','$auth','$location','$http', function($scope,$state,$stateParams,$auth,$location,$http){
 
+	var leagueId
+	var gameTeamId
+
+	$scope.storeMatchEvents = []
+	$scope.showMatchEvents = []
+	var i = 0
+
+	$scope.startGame = function(){
+		console.log('Starting Game')
+		recursive();
+	}
+
+	$scope.goToResults = function(){
+		console.log('qwertyuiop');
+		$state.go('header.fixtures', { league_id: leagueId, game_team_id: gameTeamId});
+	}
+
+
+// change the setup so that the all events are loaded buut visible then unhide them as the clock ticks
+	var recursive = function(){
+		if(i < $scope.storeMatchEvents.length){
+			setTimeout(function(){
+				$scope.showMatchEvents.push($scope.storeMatchEvents[i])
+				console.log($scope.storeMatchEvents[i].show);
+				$scope.storeMatchEvents[i].show = true;
+				console.log($scope.storeMatchEvents[i].show);
+				i++;
+				recursive();
+			},1000)
+		} else {
+			console.log('done')
+		}
+	}
+
+	var matchGet = function(){
+		$http({
+			method: 'get',
+			url: '/api/matches/' + $stateParams.match_id
+		}).success(function(resp){
+			console.log(resp)
+			leagueId = resp.league_id
+			gameTeamId = resp.game_team_id
+			$scope.storeMatchEvents = resp.match_events
+			for(var i = 0; i < $scope.storeMatchEvents.length; i++){
+				$scope.storeMatchEvents[i].show = false;
+			}
+		})
+	}
+
+	var init = function(){
+		matchGet();
+	}
+
+	init();
 }])
