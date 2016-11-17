@@ -26,13 +26,12 @@ app.controller('FixturesCtrl', ['$scope','$state','$stateParams','$auth','$locat
 
 	var gameSourceTeamDiff
 
-
 	var getFixtures = function(){
 		$http({
 			method: 'get',
 			url: '/api/leagues/' + $scope.league_id,
 		}).success(function(resp){
-			console.log(resp)
+			// console.log(resp)
 			findActiveRound(resp.rounds);
 			$scope.rounds = resp.rounds
 			$scope.date = $scope.rounds[$scope.showWeek].date
@@ -112,8 +111,8 @@ app.controller('FixturesCtrl', ['$scope','$state','$stateParams','$auth','$locat
 			// console.log($scope.fixtures[i])
 			for(var j = 0; j < $scope.fixtures[i].length; j++){
 				// console.log($scope.fixtures[i][j].id);
-				$scope.fixtures[i][j].home_team_name = findTeamName($scope.fixtures[i][j].home_team_id)
-				$scope.fixtures[i][j].away_team_name = findTeamName($scope.fixtures[i][j].away_team_id)
+				$scope.fixtures[i][j].home_team_name = findTeamName($scope.fixtures[i][j].home_team_id - gameSourceTeamDiff)
+				$scope.fixtures[i][j].away_team_name = findTeamName($scope.fixtures[i][j].away_team_id - gameSourceTeamDiff)
 			}
 		}
 	}

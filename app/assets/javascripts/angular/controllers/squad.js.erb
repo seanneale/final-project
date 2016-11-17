@@ -6,10 +6,12 @@ app.controller('SquadCtrl', ['$scope','$state','$stateParams','$auth','$location
 
 	var squadBuild = function(){
 		var id = $stateParams.game_team_id;
+		console.log(id)
 		$http({
 			method: 'GET',
 			url: '/api/game_teams/' + id
 		}).success(function(resp){
+			console.log(resp)
 			$scope.matchId = resp.match.id;
 			playersBuild(resp);
 		})

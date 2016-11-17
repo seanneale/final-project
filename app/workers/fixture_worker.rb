@@ -1,20 +1,22 @@
 class FixtureWorker
 	include Sidekiq::Worker
 
-	def perform
-		puts '.................................'
-		fixture_generate
+	def perform league_id
+		fixture_generate league_id
 		MarkMatchesAsBackgroundWorker.perform_async()
 	end
 
-	# needs to be changed to general from seed
-	def fixture_generate
+	def fixture_generate league_id
 
-		User.first.leagues.first.rounds[0].update(active: true)
+		# User.first.leagues.first.rounds[0].update(active: true)
+		League.find(league_id).rounds.order('id')[0].update(active: true)
 		half_schedule = make_fixture_array
-		@rounds = User.first.leagues.first.rounds
-		team_base_id = User.first.leagues.first.game_teams.order('id')[0][:id]
-		team_ids = User.first.leagues.first.game_teams.order('id').pluck('id').shuffle!
+		# @rounds = User.first.leagues.first.rounds
+		@rounds = League.find(league_id).rounds
+		# team_base_id = User.first.leagues.first.game_teams.order('id')[0][:id]
+		team_base_id = League.find(league_id).game_teams.order('id')[0][:id]
+		# team_ids = User.first.leagues.first.game_teams.order('id').pluck('id').shuffle!
+		team_ids = League.find(league_id).game_teams.order('id').pluck('id').shuffle!
 		# team_ids
 		(0..18).each do |round|
 			half_schedule[round].each do |match|
@@ -23,10 +25,10 @@ class FixtureWorker
 					if round % 2 == 0
 						@rounds[round].matches.create(played: false, background: false, home_team_picked: false, away_team_picked: false, home_team_score: 0, away_team_score: 0, home_team_id: team_ids[match[0]], away_team_id: team_ids[19])
 					else
-						@rounds[round].matches.create(played: false, background: false, home_team_picked: false, away_team_picked: false, home_team_score: 0, away_team_score: 0, home_team_id: team_ids[19], away_team_id: team_ids[match[0]])
+						newMatch = @rounds[round].matches.create(played: false, background: false, home_team_picked: false, away_team_picked: false, home_team_score: 0, away_team_score: 0, home_team_id: team_ids[19], away_team_id: team_ids[match[0]])
 					end	
 				else
-					@rounds[round].matches.create(played: false, background: false, home_team_picked: false, away_team_picked: false, home_team_score: 0, away_team_score: 0, home_team_id: team_ids[match[0]], away_team_id: team_ids[match[1]])
+					newMatch = @rounds[round].matches.create(played: false, background: false, home_team_picked: false, away_team_picked: false, home_team_score: 0, away_team_score: 0, home_team_id: team_ids[match[0]], away_team_id: team_ids[match[1]])
 				end
 			end
 		end

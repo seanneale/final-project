@@ -1,6 +1,7 @@
 app.controller('MatchCtrl', ['$scope','$state','$stateParams','$auth','$location','$http', function($scope,$state,$stateParams,$auth,$location,$http){
 
 	var leagueId
+	var gameTeamId
 
 	$scope.storeMatchEvents = []
 	$scope.showMatchEvents = []
@@ -13,7 +14,7 @@ app.controller('MatchCtrl', ['$scope','$state','$stateParams','$auth','$location
 
 	$scope.goToResults = function(){
 		console.log('qwertyuiop');
-		$state.go('header.fixtures', { league_id: leagueId });
+		$state.go('header.fixtures', { league_id: leagueId, game_team_id: gameTeamId});
 	}
 
 
@@ -40,6 +41,7 @@ app.controller('MatchCtrl', ['$scope','$state','$stateParams','$auth','$location
 		}).success(function(resp){
 			console.log(resp)
 			leagueId = resp.league_id
+			gameTeamId = resp.game_team_id
 			$scope.storeMatchEvents = resp.match_events
 			for(var i = 0; i < $scope.storeMatchEvents.length; i++){
 				$scope.storeMatchEvents[i].show = false;

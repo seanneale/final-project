@@ -67,7 +67,7 @@ app.config(['$stateProvider', '$urlRouterProvider','$authProvider', function($st
 	//show squad
 	.state({
 		name: 'header.squad',
-		url: '/squad/:game_team_id',
+		url: '/squad/:game_team_id/:league_id',
 		templateUrl: "<%= asset_path('main/squad.html') %>",
 		controller: 'SquadCtrl'
 	})
@@ -75,7 +75,7 @@ app.config(['$stateProvider', '$urlRouterProvider','$authProvider', function($st
 	//show league table
 	.state({
 		name: 'header.league_table',
-		url: '/league_table/:league_id',
+		url: '/league_table/:game_team_id/:league_id',
 		templateUrl: "<%= asset_path('main/league_table.html') %>",
 		controller: 'LeagueTableCtrl'
 	})
@@ -83,7 +83,7 @@ app.config(['$stateProvider', '$urlRouterProvider','$authProvider', function($st
 	//show fixtures and results
 	.state({
 		name: 'header.fixtures',
-		url: '/fixtures/:league_id',
+		url: '/fixtures/:game_team_id/:league_id',
 		templateUrl: "<%= asset_path('main/fixtures.html') %>",
 		controller: 'FixturesCtrl'
 	})

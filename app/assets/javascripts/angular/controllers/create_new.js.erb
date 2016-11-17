@@ -1,4 +1,4 @@
-app.controller('CreateNewCtrl', ['$scope','$auth','$location', "$http", function($scope,$auth,$location,$http){
+app.controller('CreateNewCtrl', ['$scope','$auth','$location',"$http",'$state','$uibModal', function($scope,$auth,$location,$http,$state,$uibModal){
 
 	$scope.teams = []
 
@@ -22,9 +22,31 @@ app.controller('CreateNewCtrl', ['$scope','$auth','$location', "$http", function
 	}
 
 	$scope.teamChoice = function(index){
+		// waitingModal.$promise.then(waitingModal.show);
+		waitingModal();
 		var teamChoice = $scope.teams[index].id;
-		console.log(teamChoice)
+		var id = $scope.user.id
+		console.log(id)
+		$http({
+			method: 'post',
+			url: '/api/user/' + id + '/leagues',
+			params: {
+				game_team_id: teamChoice,
+				league_name: $scope.leagueName
+			}
+		}).success(function(resp){
+			console.log(resp);
+			// waitingModal.$promise.then(waitingModal.hide);
+			$state.go('welcome');
+		})
 	}
+
+	var waitingModal = function(){
+		$uibModal.open({
+	        templateUrl: "<%= asset_path('main/waiting_modal.html') %>"
+	        // controller: 'ModalInstanceCtrl'
+	    });
+	};
 
 	var init = function(){
 		getTeams();
