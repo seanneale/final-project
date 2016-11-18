@@ -3,17 +3,56 @@ app.controller('MatchCtrl', ['$scope','$state','$stateParams','$auth','$location
 	var leagueId
 	var gameTeamId
 
-	$scope.storeMatchEvents = []
-	$scope.showMatchEvents = []
-	var i = 0
+	$scope.players = [];
+
+	$scope.storeMatchEvents = [];
+
+	$scope.showMatchEvents = [];
+
+	var i = 0;
+
+	$scope.showStartGame = true;
+
+	$scope.showGoToResults = false;
+
+	$scope.clock = 0;
+	$scope.homeTeamScore = 0;
+	$scope.awayTeamScore = 0;
+	$scope.homeTeamName = "";
+	$scope.awayTeamName = "";
+	$scope.homeTeamBadge = "";
+	$scope.awayTeamBadge = "";
+	$scope.homeTeamId = "";
+	$scope.awayTeamId = "";
+	
+	$scope.homeTeamColour1 = "";
+	$scope.homeTeamColour2 = "";
+	$scope.awayTeamColour1 = "";
+	$scope.awayTeamColour2 = "";
+
+	$scope.homeTeamStyle = {	
+		'background-color': $scope.homeTeamColour1,
+		'color': $scope.homeTeamColour2
+	}
+	$scope.awayTeamStyle =	{
+		'background-color': $scope.awayTeamColour1,
+		'color': $scope.awayTeamColour2
+	}
+
+	var kitClashes = [
+		[1,2,3,9,11,12,13,14,15,20],
+		[4,5,6,8],
+		[16,17,19],
+		[7,18],
+		[10]
+	]
 
 	$scope.startGame = function(){
-		console.log('Starting Game')
+		$scope.showStartGame = false;
 		recursive();
 	}
 
 	$scope.goToResults = function(){
-		console.log('qwertyuiop');
 		$state.go('header.fixtures', { league_id: leagueId, game_team_id: gameTeamId});
 	}
 
@@ -22,15 +61,29 @@ app.controller('MatchCtrl', ['$scope','$state','$stateParams','$auth','$location
 	var recursive = function(){
 		if(i < $scope.storeMatchEvents.length){
 			setTimeout(function(){
-				$scope.showMatchEvents.push($scope.storeMatchEvents[i])
-				console.log($scope.storeMatchEvents[i].show);
-				$scope.storeMatchEvents[i].show = true;
-				console.log($scope.storeMatchEvents[i].show);
+				$scope.clock = $scope.storeMatchEvents[i].time;
+				if($scope.storeMatchEvents[i].event_type == 4 && $scope.storeMatchEvents[i].team_id == $scope.homeTeamId){
+					$scope.homeTeamScore++
+				} else if ($scope.storeMatchEvents[i].event_type == 4 && $scope.storeMatchEvents[i].team_id == $scope.awayTeamId){
+					$scope.awayTeamScore++
+				}
+				if($scope.storeMatchEvents[i].team_id == $scope.homeTeamId){
+					$scope.storeMatchEvents[i].style = $scope.homeTeamStyle;
+				} else if ($scope.storeMatchEvents[i].team_id == $scope.awayTeamId){
+					$scope.storeMatchEvents[i].style = $scope.awayTeamStyle;
+				}
+				console.log($scope.storeMatchEvents[i].style)
+				$scope.showMatchEvents.unshift($scope.storeMatchEvents[i])
+				if($scope.showMatchEvents.length > 20){
+					$scope.showMatchEvents.pop()
+				}
+				$scope.$apply();
 				i++;
 				recursive();
-			},1000)
+			},100)
 		} else {
-			console.log('done')
+			$scope.showGoToResults = true;
+			$scope.$apply();
 		}
 	}
 
@@ -39,14 +92,52 @@ app.controller('MatchCtrl', ['$scope','$state','$stateParams','$auth','$location
 			method: 'get',
 			url: '/api/matches/' + $stateParams.match_id
 		}).success(function(resp){
-			console.log(resp)
+			console.log(resp);
+			$scope.homeTeamId = resp.match.home_team_id;
+			$scope.awayTeamId = resp.match.away_team_id;
+			$scope.homeTeamName = resp.home_team.name
+			$scope.awayTeamName = resp.away_team.name
+			$scope.homeTeamBadge = resp.home_team.badge_url
+			$scope.awayTeamBadge = resp.away_team.badge_url
+			kitClash($scope.homeTeamId,$scope.awayTeamId,resp);
+			$scope.homeTeamStyle = {	
+				'background-color': $scope.homeTeamColour1,
+				'color': $scope.homeTeamColour2,
+				'border-color': $scope.homeTeamColour2,
+				'border-width': '2px',
+				'border-style': 'solid',
+				'border-radius': '3px'
+			}
+			$scope.awayTeamStyle =	{
+				'background-color': $scope.awayTeamColour1,
+				'color': $scope.awayTeamColour2,
+				'border-width': '2px',
+				'border-style': 'solid',
+				'border-radius': '3px'
+			}
+			$scope.players = resp.players
 			leagueId = resp.league_id
 			gameTeamId = resp.game_team_id
 			$scope.storeMatchEvents = resp.match_events
-			for(var i = 0; i < $scope.storeMatchEvents.length; i++){
-				$scope.storeMatchEvents[i].show = false;
-			}
 		})
+	}
+
+	kitClash = function(home_team_id,away_team_id,resp){
+		// find which array features the home_team_id
+		$scope.homeTeamColour1 = resp.home_team.home_colour_1;
+		$scope.homeTeamColour2 = resp.home_team.home_colour_2;
+		for(var i = 0; i < kitClashes.length; i++){
+			if(kitClashes[i].indexOf(home_team_id % 20) > -1){
+				// console.log(kitClashes[i].indexOf(home_team_id));
+				if(kitClashes[i].indexOf(away_team_id % 20) > -1){
+					$scope.awayTeamColour1 = resp.away_team.away_colour_1;
+					$scope.awayTeamColour2 = resp.away_team.away_colour_2;
+				} else {
+					$scope.awayTeamColour1 = resp.away_team.home_colour_1;
+					$scope.awayTeamColour2 = resp.away_team.home_colour_2;
+				}
+			}
+		}
 	}
 
 	var init = function(){

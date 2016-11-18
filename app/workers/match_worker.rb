@@ -171,7 +171,7 @@ class MatchWorker
 				Match.find(id).update(possesion_zone: 4)
 				# switch control
 				Match.find(id).update(control: !control)
-				Match.find(id).match_events.create(time: @clock, event_type: 4, event_text: @away_team_name + ' will kick off', team_id: Match.find(id)[:away_team_id], possesion_zone: Match.find(id)[:possesion_zone])
+				Match.find(id).match_events.create(time: @clock, event_type: 7, event_text: @away_team_name + ' will kick off', team_id: Match.find(id)[:away_team_id], possesion_zone: Match.find(id)[:possesion_zone])
 			else
 				# away team scores
 				Match.find(id).update(away_team_score: Match.find(id)[:away_team_score] + 1)
@@ -180,7 +180,7 @@ class MatchWorker
 				Match.find(id).update(possesion_zone: 4)
 				# switch control
 				Match.find(id).update(control: !control)
-				Match.find(id).match_events.create(time: @clock, event_type: 4, event_text: @home_team_name + ' will kick off', team_id: Match.find(id)[:home_team_id], possesion_zone: Match.find(id)[:possesion_zone])
+				Match.find(id).match_events.create(time: @clock, event_type: 7, event_text: @home_team_name + ' will kick off', team_id: Match.find(id)[:home_team_id], possesion_zone: Match.find(id)[:possesion_zone])
 			end
 		else
 			# puts '...missed!'
