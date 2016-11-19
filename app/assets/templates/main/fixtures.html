@@ -1,30 +1,18 @@
-<div class="row">
+<div class="row" id="fixturePage">
 	<div class="col-xs-10 col-xs-offset-1">
 		<h1>Fixtures</h1>	
-		<h3>Week {{showWeek + 1}}: {{date}}</h3>
+		<h3 class='center'>Week {{showWeek + 1}}</h3>
 		<div class="row" ng-repeat="fixture in showFixtures" id='fixtures' ng-show="fixturesShow">
-			<div class="col-xs-5">
-				<p>{{ fixture.home_team_name }} v {{ fixture.away_team_name }}</p>
-			</div>
-			<div class="col-xs-2">
-				
-			</div>
-			<div class="col-xs-5">
-				
-			</div>
+			<div class="col-xs-5 right" ng-style='fixture.homeStyle'>{{ fixture.home_team_name }}</div>
+			<div class="col-xs-2 center">v</div>
+			<div class="col-xs-5 left" ng-style='fixture.awayStyle'>{{ fixture.away_team_name }}</div>
 		</div>
 		<div class="row" ng-repeat="fixture in showFixtures" id='results' ng-hide="fixturesShow">
-			<div class="col-xs-5">
-				<p>{{ fixture.home_team_name }} {{fixture.home_team_score}}:{{fixture.away_team_score}} {{ fixture.away_team_name }}</p>
-			</div>
-			<div class="col-xs-2">
-				
-			</div>
-			<div class="col-xs-5">
-				
-			</div>
+			<div class="col-xs-5 right" ng-style='fixture.homeStyle'>{{ fixture.home_team_name }}</div>
+			<div class="col-xs-2 center">{{fixture.home_team_score}}:{{fixture.away_team_score}}</div>
+			<div class="col-xs-5 left" ng-style='fixture.awayStyle'>{{ fixture.away_team_name }}</div>
 		</div>
-		<button type='button' ng-click='changeWeekPrev()' ng-disabled='prevWeekDisable'>Previous Week</button>
-		<button type='button' ng-click='changeWeekNext()' ng-disabled='nextWeekDisable'>Next Week</button>
+		<button button class="btn btn-primary" ng-click='changeWeekPrev()' ng-disabled='prevWeekDisable' id='previous'>Previous Week</button>
+		<button button class="btn btn-primary" ng-click='changeWeekNext()' ng-disabled='nextWeekDisable' id='next'>Next Week</button>
 	</div>
 </div>

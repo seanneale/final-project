@@ -50,28 +50,6 @@ body {
 	}
 }
 
-#teamDisplay li {
-	list-style-type: none;
-	margin: 5px;
-	max-width: 150px;
-	display: inline-block;
-}
-
-#teamDisplay ul li p {
-	max-width: 150px;
-}
-
-#teamDisplay ul li div {
-	display: inline-block;
-}
-
-.playerImage {
-	max-width: 100px;
-}
-
-#teamDisplay{
-	background: rgb(102,153,0);
-}
 
 .badgeImage {
 	width: 200px;
@@ -140,5 +118,97 @@ body {
 		ul {
 			padding-left: 0;
 		}
+	}
+}
+
+#fixturePage {
+	.left {
+		text-align: left;
+	}
+	.center {
+		text-align: center;
+	}
+	.right {
+		text-align: right;
+	}
+	font-size: 30px;
+	button {
+		background: none;
+		border: white 2px solid;
+	}
+	button:focus {
+		background: none;
+		border: white 2px solid;
+	}
+	h3 {
+		font-size: 35px;
+	}
+	#next {
+		float: right;
+	}
+	#previous {
+		float: left;
+	}
+}
+
+#leagueTable {
+	.left {
+		text-align: left;
+	}
+	.center {
+		text-align: center;
+	}
+	.right {
+		text-align: right;
+	}
+	table {
+		font-size: 20px;
+	}
+}
+
+#squadPage {
+	#squad {
+		font-size: 14px;
+		th {
+			padding: 0 5px;
+		}
+	}
+	#teamDisplay {
+		background: url('images/football_pitch-wallpaper-1920x1200.jpg');
+		/*height: 750px;*/
+		.position {
+			height: 170px;
+		}
+		ul {
+			li {
+				list-style-type: none;
+				margin: 5px;
+				max-width: 125px;
+				display: inline-block;
+				p {
+					max-width: 150px;
+				}
+				div {
+					display: inline-block;
+				}
+			}
+		}
+		.playerImage {
+			max-width: 100px;
+		}
+	}
+	button {
+		background: none;
+		border: white 2px solid;
+		font-size: 25px;
+	}
+}
+
+#navbar {
+	background: mediumblue;
+	border: goldenrod 1px solid;
+	a {
+		color: goldenrod;
+		border-radius: 0;
 	}
 }

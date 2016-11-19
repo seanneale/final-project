@@ -80,7 +80,7 @@ app.controller('MatchCtrl', ['$scope','$state','$stateParams','$auth','$location
 				$scope.$apply();
 				i++;
 				recursive();
-			},100)
+			},1000)
 		} else {
 			$scope.showGoToResults = true;
 			$scope.$apply();

@@ -31,13 +31,14 @@ app.controller('FixturesCtrl', ['$scope','$state','$stateParams','$auth','$locat
 			method: 'get',
 			url: '/api/leagues/' + $scope.league_id,
 		}).success(function(resp){
-			// console.log(resp)
+			console.log(resp)
 			findActiveRound(resp.rounds);
 			$scope.rounds = resp.rounds
 			$scope.date = $scope.rounds[$scope.showWeek].date
 			$scope.fixtures = resp.fixtures;
 			sourceTeams = resp.source_teams
 			gameSourceTeamDiff = findingMinID(resp.table)
+			colourControlledTeam();
 			addName();
 			$scope.showFixtures = $scope.fixtures[$scope.showWeek]
 			resultsCheck();
@@ -102,6 +103,30 @@ app.controller('FixturesCtrl', ['$scope','$state','$stateParams','$auth','$locat
 			$scope.prevWeekDisable = true;
 		} else {
 			$scope.prevWeekDisable = false;
+		}
+	}
+
+	var colourControlledTeam = function(){
+		// find the home team colour 1 of the controlled team
+		var controlledId = $stateParams.game_team_id;
+		console.log(controlledId);
+		var homeTeamColour = sourceTeams[controlledId - 1 - gameSourceTeamDiff].home_colour_1;
+		if(homeTeamColour == 'white'){
+			homeTeamColour = sourceTeams[controlledId - 1 - gameSourceTeamDiff].home_colour_2;
+		}
+		for(var i = 0; i < $scope.fixtures.length; i++){
+			for(var j =0; j < $scope.fixtures[i].length; j++){
+				if($scope.fixtures[i][j].home_team_id == controlledId){
+					$scope.fixtures[i][j].homeStyle = {'color': homeTeamColour}
+				} else {
+					$scope.fixtures[i][j].homeStyle = {'color': 'white'}
+				}
+				if($scope.fixtures[i][j].away_team_id == controlledId){
+					$scope.fixtures[i][j].awayStyle = {'color': homeTeamColour}
+				} else {
+					$scope.fixtures[i][j].awayStyle = {'color': 'white'}
+				}
+			}
 		}
 	}
 

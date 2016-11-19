@@ -51,7 +51,7 @@ class Api::LeaguesController < ApplicationController
 		response[:rounds] = League.find(params[:id]).rounds.all.order('id')
 		response[:fixtures] = []
 		response[:rounds].each do |round|
-			response[:fixtures].push round.matches.all
+			response[:fixtures].push round.matches.all.order('home_team_id')
 		end
 		response[:table] = League.find(params[:id]).game_teams.all.order(points: :desc, goal_difference: :desc, goals_for: :desc, win: :desc, source_team_id: :asc)
 		render json: response

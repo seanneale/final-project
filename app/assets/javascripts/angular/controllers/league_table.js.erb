@@ -11,12 +11,72 @@ app.controller('LeagueTableCtrl', ['$scope','$state','$stateParams','$auth','$lo
 			method: 'get',
 			url: '/api/leagues/' + $scope.league_id,
 		}).success(function(resp){
-			console.log(resp);
+			// console.log(resp);
 			$scope.teams = resp.table
+			console.log($scope.teams)
+			colourControlledTeam(resp);
 			sourceTeams = resp.source_teams
 			addName();
 		})
 	}
+
+	var colourControlledTeam = function(resp){
+		// find the home color of the controlled team
+		var controlledId = $stateParams.game_team_id
+		var homeTeamColour = resp.source_teams[controlledId - 1 % 20].home_colour_1
+		if(homeTeamColour == 'white'){
+			homeTeamColour = sourceTeams[controlledId - 1 - gameSourceTeamDiff].home_colour_2;
+		}
+		console.log(homeTeamColour)
+		// colour the background different colours
+		for(var i = 0; i < $scope.teams.length; i++){
+			// console.log($scope.teams[i].id);
+			if($scope.teams[i].id == controlledId){
+				console.log('qwertyuiop');
+				$scope.teams[i].style = {'color': homeTeamColour}
+			} else {
+				console.log('poiuytrewq');
+				$scope.teams[i].style = {'color': 'white'}
+			}
+			// if(i = 0){
+			// 	$scope.teams[i].style = {'background': '#FFB347'}
+			//  } //else if(i < 4){
+			// 	$scope.teams[i].style = {'background': '#FF6961'}
+			// } else if(i < 5){
+			// 	$scope.teams[i].style = {'background': '#FDFD96'}
+			// } else if(i < 17){
+			// 	$scope.teams[i].style = {'background': '#F49AC2'}
+			// } else {
+			// 	$scope.teams[i].style = {'background': '#C23B22'}
+			// }
+		}
+	}
+
+	// controlledId == $scope.teams[i]
+
+	// var colourControlledTeam = function(){
+	// 	// find the home team colour 1 of the controlled team
+	// 	var controlledId = $stateParams.game_team_id;
+	// 	console.log(controlledId);
+	// 	var homeTeamColour = sourceTeams[controlledId - 1 - gameSourceTeamDiff].home_colour_1;
+	// 	if(homeTeamColour == 'white'){
+	// 		homeTeamColour = sourceTeams[controlledId - 1 - gameSourceTeamDiff].home_colour_2;
+	// 	}
+	// 	for(var i = 0; i < $scope.fixtures.length; i++){
+	// 		for(var j =0; j < $scope.fixtures[i].length; j++){
+	// 			if($scope.fixtures[i][j].home_team_id == controlledId){
+	// 				$scope.fixtures[i][j].homeStyle = {'color': homeTeamColour}
+	// 			} else {
+	// 				$scope.fixtures[i][j].homeStyle = {'color': 'white'}
+	// 			}
+	// 			if($scope.fixtures[i][j].away_team_id == controlledId){
+	// 				$scope.fixtures[i][j].awayStyle = {'color': homeTeamColour}
+	// 			} else {
+	// 				$scope.fixtures[i][j].awayStyle = {'color': 'white'}
+	// 			}
+	// 		}
+	// 	}
+	// }
 
 	var addName = function(){
 		for(var i = 0; i < $scope.teams.length; i++){
