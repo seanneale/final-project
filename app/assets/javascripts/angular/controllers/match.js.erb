@@ -11,6 +11,8 @@ app.controller('MatchCtrl', ['$scope','$state','$stateParams','$auth','$location
 
 	var i = 0;
 
+	$scope.zones = []
+
 	$scope.showStartGame = true;
 
 	$scope.showGoToResults = false;
@@ -49,7 +51,7 @@ app.controller('MatchCtrl', ['$scope','$state','$stateParams','$auth','$location
 
 	$scope.startGame = function(){
 		$scope.showStartGame = false;
-		recursive();
+		recursive(250);
 	}
 
 	$scope.goToResults = function(){
@@ -58,29 +60,29 @@ app.controller('MatchCtrl', ['$scope','$state','$stateParams','$auth','$location
 
 
 // change the setup so that the all events are loaded buut visible then unhide them as the clock ticks
-	var recursive = function(){
+	var recursive = function(delay){
 		if(i < $scope.storeMatchEvents.length){
 			setTimeout(function(){
 				$scope.clock = $scope.storeMatchEvents[i].time;
 				if($scope.storeMatchEvents[i].event_type == 4 && $scope.storeMatchEvents[i].team_id == $scope.homeTeamId){
-					$scope.homeTeamScore++
+					$scope.homeTeamScore++;
 				} else if ($scope.storeMatchEvents[i].event_type == 4 && $scope.storeMatchEvents[i].team_id == $scope.awayTeamId){
-					$scope.awayTeamScore++
+					$scope.awayTeamScore++;
 				}
 				if($scope.storeMatchEvents[i].team_id == $scope.homeTeamId){
 					$scope.storeMatchEvents[i].style = $scope.homeTeamStyle;
 				} else if ($scope.storeMatchEvents[i].team_id == $scope.awayTeamId){
 					$scope.storeMatchEvents[i].style = $scope.awayTeamStyle;
 				}
-				console.log($scope.storeMatchEvents[i].style)
 				$scope.showMatchEvents.unshift($scope.storeMatchEvents[i])
 				if($scope.showMatchEvents.length > 20){
 					$scope.showMatchEvents.pop()
 				}
+				udpateZones($scope.storeMatchEvents[i].team_id,$scope.storeMatchEvents[i].possesion_zone);
 				$scope.$apply();
 				i++;
-				recursive();
-			},1000)
+				recursive(delay);
+			},delay)
 		} else {
 			$scope.showGoToResults = true;
 			$scope.$apply();
@@ -115,6 +117,7 @@ app.controller('MatchCtrl', ['$scope','$state','$stateParams','$auth','$location
 				'border-style': 'solid',
 				'border-radius': '3px'
 			}
+			generateZones();
 			$scope.players = resp.players
 			leagueId = resp.league_id
 			gameTeamId = resp.game_team_id
@@ -122,7 +125,48 @@ app.controller('MatchCtrl', ['$scope','$state','$stateParams','$auth','$location
 		})
 	}
 
-	kitClash = function(home_team_id,away_team_id,resp){
+	var generateZones = function(){
+		$scope.zones = [];
+		console.log($scope.zones)
+		for(var i = 0; i < 5; i++){
+			zone = {};
+			zone.style = {'background-color': $scope.homeTeamColour1};
+			zone.show = false;
+			$scope.zones.push(zone);
+		}
+		for(var i = 0; i < 4; i++){
+			zone = {};
+			zone.style = {'background-color': $scope.awayTeamColour1};
+			zone.show = false;
+			$scope.zones.push(zone);
+		}
+		$scope.zones[4].show = true;
+	}
+
+	var udpateZones = function(team_id,poss_zone){
+		if(team_id == $scope.homeTeamId){
+			var midpoint = poss_zone + 1;
+		} else {
+			var midpoint = poss_zone;
+		}
+		$scope.zones = [];
+		console.log($scope.zones)
+		for(var i = 0; i < midpoint; i++){
+			zone = {};
+			zone.style = {'background-color': $scope.homeTeamColour1};
+			zone.show = false;
+			$scope.zones.push(zone);
+		}
+		for(var i = midpoint; i < 9; i++){
+			zone = {};
+			zone.style = {'background-color': $scope.awayTeamColour1};
+			zone.show = false;
+			$scope.zones.push(zone);
+		}
+		$scope.zones[poss_zone].show = true;
+	}
+
+	var kitClash = function(home_team_id,away_team_id,resp){
 		// find which array features the home_team_id
 		$scope.homeTeamColour1 = resp.home_team.home_colour_1;
 		$scope.homeTeamColour2 = resp.home_team.home_colour_2;

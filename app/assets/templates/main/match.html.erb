@@ -29,6 +29,14 @@
 	</div>
 
 	<div class="row">
+		<div id="possessionTracker">
+			<div class="zones" ng-repeat="zone in zones" ng-style='zone.style'>
+				<img src="<%= image_url('football-147854_640')%>" ng-show='zone.show'>
+			</div>
+		</div>
+	</div>
+
+	<div class="row">
 		<div class="col-xs-3 left teamSheet" ng-style="homeTeamStyle">
 			<ul>
 				<li ng-repeat="player in players | filter:{ position: '1', team_id: homeTeamId}">

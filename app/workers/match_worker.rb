@@ -184,12 +184,14 @@ class MatchWorker
 			end
 		else
 			# puts '...missed!'
-			Match.find(id).update(control: !control)
 			if control
-				Match.find(id).match_events.create(time: @clock, event_type: 5, event_text: @away_team_name + ' have missed', team_id: Match.find(id)[:away_team_id], possesion_zone: Match.find(id)[:possesion_zone])
-			else
 				Match.find(id).match_events.create(time: @clock, event_type: 5, event_text: @home_team_name + ' have missed', team_id: Match.find(id)[:home_team_id], possesion_zone: Match.find(id)[:possesion_zone])
+				Match.find(id).match_events.create(time: @clock, event_type: 11, event_text: @away_team_name + ' will take a goal kick', team_id: Match.find(id)[:away_team_id], possesion_zone: Match.find(id)[:possesion_zone])
+			else
+				Match.find(id).match_events.create(time: @clock, event_type: 5, event_text: @away_team_name + ' have missed', team_id: Match.find(id)[:away_team_id], possesion_zone: Match.find(id)[:possesion_zone])
+				Match.find(id).match_events.create(time: @clock, event_type: 11, event_text: @home_team_name + ' will take a goal kick', team_id: Match.find(id)[:home_team_id], possesion_zone: Match.find(id)[:possesion_zone])
 			end
+			Match.find(id).update(control: !control)
 		end	
 	end
 

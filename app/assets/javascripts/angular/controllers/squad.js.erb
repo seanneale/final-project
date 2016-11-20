@@ -1,4 +1,4 @@
-app.controller('SquadCtrl', ['$scope','$state','$stateParams','$auth','$location','$http', function($scope,$state,$stateParams,$auth,$location,$http){
+app.controller('SquadCtrl', ['$scope','$state','$stateParams','$auth','$location','$http','$uibModal', function($scope,$state,$stateParams,$auth,$location,$http,$uibModal){
 
 	$scope.players = [];
 
@@ -121,6 +121,7 @@ app.controller('SquadCtrl', ['$scope','$state','$stateParams','$auth','$location
 			}
 		}
 		if($scope.squad.length == 11 && positionCheck('GK') && positionCheck('D') && positionCheck('M') && positionCheck('F')){
+			waitingModal();
 			console.log($scope.squad_ids);
 			var id = $stateParams.game_team_id
 			$http({
@@ -128,13 +129,30 @@ app.controller('SquadCtrl', ['$scope','$state','$stateParams','$auth','$location
 				url: '/api/game_teams/' + id + '/match_stats',
 				params: $scope.squad_ids
 			}).success(function(){
-				console.log();
-				$state.go('pre_match', { match_id: $scope.matchId});
+				$state.go('match', { match_id: $scope.matchId});
 			})
 		} else {
 			console.log('put some error reporting in here')
 		}
 	}
+
+	// var matchCheck =function(){
+	// 	var check = false
+	// 	while(!check){
+	// 		$http({
+	// 			method: 'get',
+	// 			url: '/api/matches/' + $scope.matchId
+	// 		}).success(function(resp){
+	// 			check = resp.match.played;
+	// 		})
+	// 	}
+	// };
+
+	var waitingModal = function(){
+		$uibModal.open({
+			templateUrl: "<%= asset_path('main/waiting_modal.html') %>"
+	    });
+	};
 
 	var init = function(){
 		squadBuild();
