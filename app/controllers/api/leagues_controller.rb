@@ -5,10 +5,30 @@ class Api::LeaguesController < ApplicationController
 		response = {}
 		response[:leagues] = User.find(params[:user_id]).leagues
 		response[:game_teams] = []
+		response[:home_colour_1s] = []
+		response[:home_colour_2s] = []
+		response[:badge_urls] = []
+		response[:next_games] = []
+		
 		response[:leagues].each do |league|
 			game_team = GameTeam.find_by(user_id: params[:user_id], league_id: league.id)
 			response[:game_teams].push game_team
+			home_colour_1 = game_team.source_team[:home_colour_1]
+			response[:home_colour_1s].push home_colour_1
+			home_colour_2 = game_team.source_team[:home_colour_2]
+			response[:home_colour_2s].push home_colour_2
+			badge_url = game_team.source_team[:badge_url]
+			response[:badge_urls].push badge_url
+			next_game_home = league.rounds.find_by(active: true).matches.find_by(home_team_id: game_team[:id])
+			next_game_away = league.rounds.find_by(active: true).matches.find_by(away_team_id: game_team[:id])
+			if next_game_home
+				next_game = GameTeam.find(next_game_home[:away_team_id]).source_team[:name]
+			else 
+				next_game = GameTeam.find(next_game_away[:home_team_id]).source_team[:name]
+			end
+			response[:next_games].push next_game
 		end
+
 		render json: response
 	end
 

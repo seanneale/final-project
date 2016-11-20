@@ -1,21 +1,29 @@
-<h1>Welcome</h1>
-
-<p>This is the landing page after login, I intend to show all of the Users leagues and the option to create a new one</p>
-
-<p>I would like to show the team the User controls, the league name and the status of each league: awaiting team selection, match run  etc...</p>
-
-<div id="gameList">
-	<ul>
-		<li ng-repeat="league in leagues">
-			<a ui-sref="header.squad({game_team_id: {{league.game_team_id}}, league_id: {{league.id}} })">
-				<button class="btn btn-primary" ng-click="squadBuild($index)">
-					<h4>{{league.league_name}}</h4>
-					<h5>{{league.id}}</h5>
-				</button>
-			</a>
-		</li>
-	</ul>
-</div>
-
-<a ui-sref="create_new"><button class="btn btn-primary" ng-click="squadBuild()">Create New Game</button>
-</a>
+<div class="container" id='welcomePage'>
+<!-- 	<div class="row">
+		<div class="col-xs-10 col-xs-offset-1">
+ -->			<h1>Premier Manager 2</h1>
+			<h3>Please Choose Your Game:</h3>
+			<div id="gameList" class="row">
+				<ul>
+					<li ng-repeat="league in leagues">
+						<a ui-sref="header.squad({game_team_id: {{league.game_team_id}}, league_id: {{league.id}} })">
+							<button class="btn btn-primary" ng-click="squadBuild($index)" ng-style='league.style'>
+								<div class="col-xs-3">
+									<img src='{{league.badge_url}}'>
+								</div>
+								<div class="col-xs-9">
+									<h4>{{league.league_name}}</h4>
+									<h5>Next Game: {{league.next_game}}</h5>
+								</div>
+							</button>
+						</a>
+					</li>
+					<li><a ui-sref="create_new"><button class="btn btn-primary" id='createNew' ng-click="squadBuild()"><h4>Create New Game</h4></button></a></li>
+				</ul>
+				
+			</div>
+			<div class="row">
+			</div>
+<!-- 		</div>
+	</div>
+ --></div>

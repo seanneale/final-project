@@ -205,10 +205,37 @@ body {
 }
 
 #navbar {
-	background: mediumblue;
-	border: goldenrod 1px solid;
+	/*background: mediumblue;*/
+	/*border: mediumblue 1px solid;*/
+	/*border-bottom: goldenrod 3px solid;*/
+	border-radius: 0;
 	a {
-		color: goldenrod;
-		border-radius: 0;
+		/*color: goldenrod;*/
+	}
+}
+
+#welcomePage {
+	h1 {
+		font-size: 60px;
+		text-align: center;
+	}
+	#createNew {
+		background: rgb(102,153,0);
+		border:  white solid 2px;
+	}
+	button {
+		margin: 10px;
+		width: 500px;
+		height: 100px;
+		h4 {
+			text-overflow: ellipsis;
+		}
+	}
+	li {
+		list-style-type: none;
+		display: inline;
+		img {
+			height: 75px;
+		}
 	}
 }
