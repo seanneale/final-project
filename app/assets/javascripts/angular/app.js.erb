@@ -3,7 +3,7 @@
 // var app = angular.module('appName', ['oneDependency']);
 var app = angular.module('final-project', ['ui.router','ng-token-auth','ui.bootstrap']);
 
-app.config(['$stateProvider', '$urlRouterProvider','$authProvider', function($stateProvider, $urlRouterProvider, $authProvider) {
+app.config(['$stateProvider', '$urlRouterProvider','$authProvider', 'URL_CONSTANT', function($stateProvider, $urlRouterProvider, $authProvider, URL_CONSTANT) {
 	$urlRouterProvider.otherwise('/');
 
 	// Configure Angular Routes
@@ -107,7 +107,7 @@ app.config(['$stateProvider', '$urlRouterProvider','$authProvider', function($st
     $authProvider.configure({
 		// By default, you only need to configure apiUrl
 		// Note that if you put a '/' at the end of the link, there will be errors when calling the api
-		apiUrl: 'http://localhost:3000',
+		apiUrl: URL_CONSTANT.apiUrl,
 		authProviderPaths: {
 			facebook: '/auth/facebook' // <-- note that this is different than what was set with github
 		}

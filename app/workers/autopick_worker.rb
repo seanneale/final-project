@@ -30,20 +30,20 @@ class AutopickWorker
 			else
 				autopick = true
 			end
-			puts '.'
-			puts '1234567890qwertyuiopllkjhgfdsazxcvbnm'
-			puts '.'
-			puts picked
-			puts autopick
+			# puts '.'
+			# puts '1234567890qwertyuiopllkjhgfdsazxcvbnm'
+			# puts '.'
+			# puts picked
+			# puts autopick
 			if !picked && autopick
 		# if it hasn't been picked yet then pick the team and update the team as picked
 				choices = []
 				choices.concat goalkeeper_autopicker game_team,1
-				puts 1
+				# puts 1
 				choices.concat defender_autopicker game_team,4
 				choices.concat midfielder_autopicker game_team,4
 				choices.concat attacker_autopicker game_team,2
-				puts choices.to_s
+				# puts choices.to_s
 				# create new match stats section
 				choices.each do |choice|
 					GamePlayer.find(choice).match_stats.create(match_id: match_id)
@@ -105,26 +105,33 @@ class AutopickWorker
 
 	def midfielder_autopicker team,limit
 		picked_squad = []
-		players = team.source_team.source_players.where(position: 3).order(attacking_ability: :desc)
-		att_mid_limit = limit / 2
-		def_mid_limit = limit - att_mid_limit
+		players = team.source_team.source_players.where(position: 3).order(defending_ability: :desc)
 		i = 0
-		j = 0
-		already_picked = []
-		while i < att_mid_limit do
-			already_picked.push players[i][:id]
+		while i < limit do
 			source_player_id = players[i][:id]
 			game_player_id = team.game_players.find_by(source_player_id: source_player_id)[:id]
 			picked_squad.push game_player_id
 			i += 1
 		end
-		players = team.source_team.source_players.where(position: 3).where.not(id: already_picked[0]).where.not(id: already_picked[1]).order(defending_ability: :desc)
-		while j < def_mid_limit do
-			source_player_id = players[i][:id]
-			game_player_id = team.game_players.find_by(source_player_id: source_player_id)[:id]
-			picked_squad.push game_player_id
-			j += 1
-		end
+		# att_mid_limit = limit / 2
+		# def_mid_limit = limit - att_mid_limit
+		# i = 0
+		# j = 0
+		# already_picked = []
+		# while i < att_mid_limit do
+		# 	already_picked.push players[i][:id]
+		# 	source_player_id = players[i][:id]
+		# 	game_player_id = team.game_players.find_by(source_player_id: source_player_id)[:id]
+		# 	picked_squad.push game_player_id
+		# 	i += 1
+		# end
+		# players = team.source_team.source_players.where(position: 3).where.not(id: already_picked[0]).where.not(id: already_picked[1]).order(defending_ability: :desc)
+		# while j < def_mid_limit do
+		# 	source_player_id = players[i][:id]
+		# 	game_player_id = team.game_players.find_by(source_player_id: source_player_id)[:id]
+		# 	picked_squad.push game_player_id
+		# 	j += 1
+		# end
 		picked_squad
 	end
 

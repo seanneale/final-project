@@ -1,11 +1,121 @@
-<h1>PREMATCH PAGE!!!!</h1>
+<div class="container" id='preMatchScreen'>
+	<h1 class='center'>{{homeTeamName}} vs {{awayTeamName}}</h1>
+	<div class="row">
+		<div class="col-xs-6 right">
+			<div class="row">
+				<div class="col-xs-6">
+					<img id='homeBadge' src='{{homeTeamBadge}}'>
+				</div>
+			</div>
+			<div class="row" id='forms'>
+				<div class="col-xs-11">
+					<div class="form" ng-repeat='result in homeTeamForm' ng-style='result'></div>
+				</div>
+			</div>
+			<div class="row" id="teamDisplay">
+				<div class="row">
+					<div class="row position" id="GK">
+						<ul class="text-center">
+							<li ng-repeat="player in players | filter:{ position: '1', team_id: homeTeamId}">
+								<div>
+									<img class="playerImage" ng-src="{{player.image}}">
+									<p>{{player.name}}</p>
+								</div>
+							</li>
+						</ul>
+					</div>
+					<div class="row position" id="D">
+						<ul class="text-center">
+							<li ng-repeat="player in players | filter:{ position: '2', team_id: homeTeamId}">
+								<div><img class="playerImage" ng-src="{{player.image}}"><p>{{player.name}}</p></div>
+							</li>
+						</ul>
+					</div>
+					<div class="row position" id="M">
+						<ul class="text-center">
+							<li ng-repeat="player in players | filter:{ position: '3', team_id: homeTeamId}">
+								<div>
+									<img class="playerImage" ng-src="{{player.image}}">
+									<p>{{player.name}}</p>
+								</div>
+							</li>
+						</ul>
+					</div>
+					<div class="row position" id="F">
+						<ul class="text-center">
+							<li ng-repeat="player in players | filter:{ position: '4', team_id: homeTeamId}">
+								<div>
+									<img class="playerImage" ng-src="{{player.image}}">
+									<p>{{player.name}}</p>
+								</div>
+							</li>
+						</ul>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="col-xs-6 left">
+			<div class="row">
+				<div class="col-xs-6 right">
+					<img src='{{awayTeamBadge}}'>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-xs-11 col-xs-offset-1">
+					<div class="form" ng-repeat='result in awayTeamForm' ng-style='result'></div>
+				</div>
+			</div>
+			<div class="row" id="teamDisplay">
+				<div class="row">
+					<div class="row position" id="GK">
+						<ul class="text-center">
+							<li ng-repeat="player in players | filter:{ position: '1', team_id: awayTeamId}">
+								<div>
+									<img class="playerImage" ng-src="{{player.image}}">
+									<p>{{player.name}}</p>
+								</div>
+							</li>
+						</ul>
+					</div>
+					<div class="row position" id='d'>
+						<ul class="text-center">
+							<li ng-repeat="player in players | filter:{ position: '2', team_id: awayTeamId}">
+								<div><img class="playerImage" ng-src="{{player.image}}"><p>{{player.name}}</p></div>
+							</li>
+						</ul>
+					</div>
+					<div class="row position" id="M">
+						<ul class="text-center">
+							<li ng-repeat="player in players | filter:{ position: '3', team_id: awayTeamId}">
+								<div>
+									<img class="playerImage" ng-src="{{player.image}}">
+									<p>{{player.name}}</p>
+								</div>
+							</li>
+						</ul>
+					</div>
+					<div class="row position" id="F">
+						<ul class="text-center">
+							<li ng-repeat="player in players | filter:{ position: '4', team_id: awayTeamId}">
+								<div>
+									<img class="playerImage" ng-src="{{player.image}}">
+									<p>{{player.name}}</p>
+								</div>
+							</li>
+						</ul>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="row">
+		<a ui-sref="match({match_id: {{matchId}}})">
+			<button class="btn btn-primary col-xs-6 col-xs-offset-3" ng-show='leaveButton'>
+				<h1>Go To Game</h1>
+			</button>
+		</a>
+	</div>
+</div>
 
-put some info here about the team that they are playing lineups? other fixtures
 
-main aim is to delay the player while the game is running
 
-<a ui-sref="match({match_id: {{matchId}}})">
-	<button class="btn btn-primary">
-		Go To Game
-	</button>
-</a>

@@ -1,32 +1,34 @@
-<div class="row">
+<div class="row" id="leagueTable">
 	<div class="col-xs-10 col-xs-offset-1">
 		<h1>League Table</h1>
 		<div class="row">
-			<table class="leagueTable">
+			<table class="table">
 				<thead>
 					<tr>
 						<th></th>
 						<th>Name</th>
-						<th>Wins</th>
-						<th>Draw</th>
-						<th>Lose</th>
-						<th>GF</th>
-						<th>GA</th>
-						<th>GD</th>
-						<th>Points</th>
+						<th class="center">Apps.</th>
+						<th class="center">Wins</th>
+						<th class="center">Draw</th>
+						<th class="center">Lose</th>
+						<th class="center">GF</th>
+						<th class="center">GA</th>
+						<th class="center">GD</th>
+						<th class="center">Points</th>
 					</tr>
 				</thead>
 				<tbody>
-					<tr ng-repeat="team in teams">
+					<tr ng-repeat="team in teams" ng-style='team.style'>
 						<th>{{$index + 1}}</th>
 						<th>{{team.source_team_name}}</th>
-						<th>{{team.win}}</th>
-						<th>{{team.draw}}</th>
-						<th>{{team.loss}}</th>
-						<th>{{team.goals_for}}</th>
-						<th>{{team.goals_against}}</th>
-						<th>{{team.goal_difference}}</th>
-						<th>{{team.points}}</th>
+						<th class="center">{{team.win + team.draw + team.loss}}</th>
+						<th class="center">{{team.win}}</th>
+						<th class="center">{{team.draw}}</th>
+						<th class="center">{{team.loss}}</th>
+						<th class="center">{{team.goals_for}}</th>
+						<th class="center">{{team.goals_against}}</th>
+						<th class="center">{{team.goal_difference}}</th>
+						<th class="center">{{team.points}}</th>
 					</tr>
 				</tbody>
 			</table>

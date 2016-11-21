@@ -18,6 +18,13 @@ app.controller('WelcomeCtrl', ['$scope','$auth','$location', '$http','$state','$
 				for(var i = 0; i < resp.leagues.length; i++){
 					$scope.leagues.push(resp.leagues[i]);
 					$scope.leagues[i].game_team_id = resp.game_teams[i].id;
+					$scope.leagues[i].badge_url = resp.badge_urls[i]
+					$scope.leagues[i].next_game = resp.next_games[i]
+					$scope.leagues[i].style = {
+												'background': resp.home_colour_1s[i],
+												'color': resp.home_colour_2s[i],
+												'border': resp.home_colour_2s[i] + ' 2px solid'
+											}
 				}
 				console.log($scope.leagues)
 			})

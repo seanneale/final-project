@@ -8,11 +8,13 @@ class MatchWorker
 			# check each unplayed game and see if it can be played 
 			ready_matches = round.matches.where(played: false, home_team_picked: true, away_team_picked: true)
 			ready_matches.each do |match|
-				puts match[:id]
-				# play the ready games
-				play_match match[:id]
-				# set them to played
-				Match.find(match[:id]).update(played: true)
+				if !match.played
+					Match.find(match[:id]).update(played: true)
+					puts match[:id]
+					# play the ready games
+					play_match match[:id]
+					# set them to played
+				end
 			end
 
 		end
@@ -74,9 +76,9 @@ class MatchWorker
 		@squad_arr = [[],[],[],[]]
 
 		Match.find(match_id).match_stats.each do |player|
-			puts '.'
-			puts player.game_players[0][:game_team_id]
-			puts team_id
+			# puts '.'
+			# puts player.game_players[0][:game_team_id]
+			# puts team_id
 
 			if player.game_players[0][:game_team_id] == team_id
 				name = player.game_players[0].source_player[:name]
@@ -108,10 +110,10 @@ class MatchWorker
 			end
 		end
 
-		puts @squad_arr[0].to_s
-		puts @squad_arr[1].to_s
-		puts @squad_arr[2].to_s
-		puts @squad_arr[3].to_s
+		# puts @squad_arr[0].to_s
+		# puts @squad_arr[1].to_s
+		# puts @squad_arr[2].to_s
+		# puts @squad_arr[3].to_s
 
 		squad_hash = {
 			goalkeeper:		@squad_arr[0],
@@ -171,7 +173,7 @@ class MatchWorker
 				Match.find(id).update(possesion_zone: 4)
 				# switch control
 				Match.find(id).update(control: !control)
-				Match.find(id).match_events.create(time: @clock, event_type: 4, event_text: @away_team_name + ' will kick off', team_id: Match.find(id)[:away_team_id], possesion_zone: Match.find(id)[:possesion_zone])
+				Match.find(id).match_events.create(time: @clock, event_type: 7, event_text: @away_team_name + ' will kick off', team_id: Match.find(id)[:away_team_id], possesion_zone: Match.find(id)[:possesion_zone])
 			else
 				# away team scores
 				Match.find(id).update(away_team_score: Match.find(id)[:away_team_score] + 1)
@@ -180,14 +182,16 @@ class MatchWorker
 				Match.find(id).update(possesion_zone: 4)
 				# switch control
 				Match.find(id).update(control: !control)
-				Match.find(id).match_events.create(time: @clock, event_type: 4, event_text: @home_team_name + ' will kick off', team_id: Match.find(id)[:home_team_id], possesion_zone: Match.find(id)[:possesion_zone])
+				Match.find(id).match_events.create(time: @clock, event_type: 7, event_text: @home_team_name + ' will kick off', team_id: Match.find(id)[:home_team_id], possesion_zone: Match.find(id)[:possesion_zone])
 			end
 		else
 			# puts '...missed!'
 			if control
-				Match.find(id).match_events.create(time: @clock, event_type: 5, event_text: @away_team_name + ' have missed', team_id: Match.find(id)[:away_team_id], possesion_zone: Match.find(id)[:possesion_zone])
-			else
 				Match.find(id).match_events.create(time: @clock, event_type: 5, event_text: @home_team_name + ' have missed', team_id: Match.find(id)[:home_team_id], possesion_zone: Match.find(id)[:possesion_zone])
+				Match.find(id).match_events.create(time: @clock, event_type: 11, event_text: @away_team_name + ' will take a goal kick', team_id: Match.find(id)[:away_team_id], possesion_zone: Match.find(id)[:possesion_zone])
+			else
+				Match.find(id).match_events.create(time: @clock, event_type: 5, event_text: @away_team_name + ' have missed', team_id: Match.find(id)[:away_team_id], possesion_zone: Match.find(id)[:possesion_zone])
+				Match.find(id).match_events.create(time: @clock, event_type: 11, event_text: @home_team_name + ' will take a goal kick', team_id: Match.find(id)[:home_team_id], possesion_zone: Match.find(id)[:possesion_zone])
 			end
 			Match.find(id).update(control: !control)
 		end	
@@ -195,9 +199,9 @@ class MatchWorker
 
 	def pass_midpoint_calc home_team_squad,away_team_squad,id
 		zone = Match.find(id)[:possesion_zone]
-		puts zone
+		# puts zone
 		control = Match.find(id)[:control]
-		puts control
+		# puts control
 		if control
 			if zone >= 6
 				attacking = home_team_squad[:attackers]
@@ -223,17 +227,17 @@ class MatchWorker
 		end
 		att_player = attacking.sample
 		# puts att_player[:attacking_ability]
-		puts attacking.to_s
+		# puts attacking.to_s
 		att_pos_ave = pos_ave attacking,true
 		def_player = defending.sample
 		# puts def_player[:defending_ability]
-		puts defending.to_s
+		# puts defending.to_s
 		def_pos_ave = pos_ave defending,false
 		(att_player[:attacking_ability] + att_pos_ave)/(att_player[:attacking_ability] + att_pos_ave + def_player[:defending_ability] + def_pos_ave)
 	end
 
 	def pos_ave position_array,attacking
-		puts '.'
+		# puts '.'
 		if attacking
 			key = :attacking_ability
 		else
@@ -241,7 +245,7 @@ class MatchWorker
 		end
 		total = 0
 		position_array.each do |player|
-			puts player
+			# puts player
 			total = total + player[key]
 		end
 		total/position_array.length

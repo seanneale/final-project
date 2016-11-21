@@ -1,0 +1,26 @@
+<div class="container" id='login'>
+	<div class="row">
+		<%= image_tag('soccer-34898.svg') %>
+		<h1>Premier Manager <br><span>2</span></h1>
+		<div class="row">
+			<form ng-submit="login()" role="form" ng-init="loginForm = {}" class='col-xs-6 col-xs-offset-3'>
+				<div class="form-group">
+					<label for="email">Email:</label>
+					<input type="email" id='email' name="email" ng-model="loginForm.email" required="required" class="form-control " placeholder="Enter Email"/>
+				</div>
+				<div class="form-group">
+					<label for='password'>Password:</label>
+					<input type="password" id='password' name="password" ng-model="loginForm.password" required="required" class="form-control" placeholder="Enter Password"/>
+				</div>
+				<button type="submit" class="btn btn-primary btn-lg">Login</button>
+				<!-- <a href="/#/"><button class="btn btn-danger btn-lg">Back</button></a> -->
+			</form>
+		</div>
+	</div>
+</div>
+
+<!-- <div class="container">
+	<div class="row">
+		<h1>Login</h1>
+	</div>
+</div> -->
