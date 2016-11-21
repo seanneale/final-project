@@ -30,20 +30,20 @@ class AutopickWorker
 			else
 				autopick = true
 			end
-			puts '.'
-			puts '1234567890qwertyuiopllkjhgfdsazxcvbnm'
-			puts '.'
-			puts picked
-			puts autopick
+			# puts '.'
+			# puts '1234567890qwertyuiopllkjhgfdsazxcvbnm'
+			# puts '.'
+			# puts picked
+			# puts autopick
 			if !picked && autopick
 		# if it hasn't been picked yet then pick the team and update the team as picked
 				choices = []
 				choices.concat goalkeeper_autopicker game_team,1
-				puts 1
+				# puts 1
 				choices.concat defender_autopicker game_team,4
 				choices.concat midfielder_autopicker game_team,4
 				choices.concat attacker_autopicker game_team,2
-				puts choices.to_s
+				# puts choices.to_s
 				# create new match stats section
 				choices.each do |choice|
 					GamePlayer.find(choice).match_stats.create(match_id: match_id)

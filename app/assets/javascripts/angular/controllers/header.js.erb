@@ -1,7 +1,6 @@
 app.controller('HeaderCtrl', ['$scope','$state','$stateParams','$auth','$location','$http', function($scope,$state,$stateParams,$auth,$location,$http){
 
 	$scope.game_team_id = $state.params.game_team_id;
-	console.log($state);
 	$scope.league_id = $state.params.league_id;
 	$scope.navbarStyle = {};
 	$scope.aStyle = {}
@@ -21,9 +20,6 @@ app.controller('HeaderCtrl', ['$scope','$state','$stateParams','$auth','$locatio
 			method: 'get',
 			url: '/api/leagues/' + $scope.league_id
 		}).success(function(resp){
-			console.log(resp);
-			console.log(($scope.game_team_id - 1) % 20)
-			console.log()
 			homeColour1 = resp.source_teams[($scope.game_team_id - 1) % 20].home_colour_1;
 			homeColour2 = resp.source_teams[($scope.game_team_id - 1) % 20].home_colour_2;
 			$scope.aStyle = {'color': homeColour2}

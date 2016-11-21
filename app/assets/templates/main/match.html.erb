@@ -39,19 +39,19 @@
 	<div class="row">
 		<div class="col-xs-3 left teamSheet" ng-style="homeTeamStyle">
 			<ul>
-				<li ng-repeat="player in players | filter:{ position: '1', team_id: homeTeamId}">
+				<li ng-repeat="player in players | filter:{ position: '1', team_id: homeTeamId} : true">
 					<div class="col-xs-2">{{player.squad_number}}</div>
 					<div class="col-xs-10">{{player.name}}</div>
 				</li>
-				<li ng-repeat="player in players | filter:{ position: '2', team_id: homeTeamId}">
+				<li ng-repeat="player in players | filter:{ position: '2', team_id: homeTeamId} : true">
 					<div class="col-xs-2">{{player.squad_number}}</div>
 					<div class="col-xs-10">{{player.name}}</div>
 				</li>
-				<li ng-repeat="player in players | filter:{ position: '3', team_id: homeTeamId}">
+				<li ng-repeat="player in players | filter:{ position: '3', team_id: homeTeamId} : true">
 					<div class="col-xs-2">{{player.squad_number}}</div>
 					<div class="col-xs-10">{{player.name}}</div>
 				</li>
-				<li ng-repeat="player in players | filter:{ position: '4', team_id: homeTeamId}">
+				<li ng-repeat="player in players | filter:{ position: '4', team_id: homeTeamId} : true">
 					<div class="col-xs-2">{{player.squad_number}}</div>
 					<div class="col-xs-10">{{player.name}}</div>
 				</li>
@@ -70,19 +70,19 @@
 		</div>
 		<div class="col-xs-3 right teamSheet" ng-style="awayTeamStyle">
 			<ul>
-				<li ng-repeat="player in players | filter:{ position: '1', team_id: awayTeamId}">
+				<li ng-repeat="player in players | filter:{ position: '1', team_id: awayTeamId} : true">
 					<div class="col-xs-10">{{player.name}}</div>
 					<div class="col-xs-2">{{player.squad_number}}</div>
 				</li>
-				<li ng-repeat="player in players | filter:{ position: '2', team_id: awayTeamId}">
+				<li ng-repeat="player in players | filter:{ position: '2', team_id: awayTeamId} : true">
 					<div class="col-xs-10">{{player.name}}</div>
 					<div class="col-xs-2">{{player.squad_number}}</div>
 				</li>
-				<li ng-repeat="player in players | filter:{ position: '3', team_id: awayTeamId}">
+				<li ng-repeat="player in players | filter:{ position: '3', team_id: awayTeamId} : true">
 					<div class="col-xs-10">{{player.name}}</div>
 					<div class="col-xs-2">{{player.squad_number}}</div>
 				</li>
-				<li ng-repeat="player in players | filter:{ position: '4', team_id: awayTeamId}">
+				<li ng-repeat="player in players | filter:{ position: '4', team_id: awayTeamId} : true">
 					<div class="col-xs-10">{{player.name}}</div>
 					<div class="col-xs-2">{{player.squad_number}}</div>
 				</li>

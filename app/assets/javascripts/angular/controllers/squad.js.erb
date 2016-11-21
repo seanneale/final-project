@@ -6,12 +6,10 @@ app.controller('SquadCtrl', ['$scope','$state','$stateParams','$auth','$location
 
 	var squadBuild = function(){
 		var id = $stateParams.game_team_id;
-		console.log(id)
 		$http({
 			method: 'GET',
 			url: '/api/game_teams/' + id
 		}).success(function(resp){
-			console.log(resp)
 			$scope.matchId = resp.match.id;
 			playersBuild(resp);
 		})
@@ -37,7 +35,6 @@ app.controller('SquadCtrl', ['$scope','$state','$stateParams','$auth','$location
 	};
 
 	$scope.limitTeamSelection = function(){
-		// console.log($scope.players);
 		var counter = 0;
 		for(var i = 0; i < $scope.players.length; i++){
 			if($scope.players[i].picked){
@@ -67,9 +64,12 @@ app.controller('SquadCtrl', ['$scope','$state','$stateParams','$auth','$location
 				} else if (source_players[i].position == 4) {
 					player.position = 'F';
 				}
-				player.gk_a = source_players[i].goalkeeping_ability.toFixed(1)
-				player.d_a = source_players[i].defending_ability.toFixed(1)
-				player.f_a = source_players[i].attacking_ability.toFixed(1)
+				if(source_players[i].position == 1){
+					player.gk_a = source_players[i].goalkeeping_ability.toFixed(1)
+				} else {
+					player.d_a = source_players[i].defending_ability.toFixed(1)
+					player.f_a = source_players[i].attacking_ability.toFixed(1)
+				}
 				player.apps = game_players[i].appearances
 				player.goals = game_players[i].season_goals_scored
 				var pass_percent = game_players[i].season_succesful_passes / game_players[i].season_attempted_passes
@@ -129,7 +129,7 @@ app.controller('SquadCtrl', ['$scope','$state','$stateParams','$auth','$location
 				url: '/api/game_teams/' + id + '/match_stats',
 				params: $scope.squad_ids
 			}).success(function(){
-				$state.go('match', { match_id: $scope.matchId});
+				$state.go('pre_match', { match_id: $scope.matchId});
 			})
 		} else {
 			console.log('put some error reporting in here')

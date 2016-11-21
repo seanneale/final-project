@@ -1,5 +1,65 @@
 app.controller('PreMatchCtrl', ['$scope','$state','$stateParams','$auth','$location','$http', function($scope,$state,$stateParams,$auth,$location,$http){
 
 	$scope.matchId = $stateParams.match_id;
+	$scope.homeTeamName;
+	$scope.homeTeamBadge;
+	$scope.homeTeamForm = [];
+	$scope.homeTeamId;
+	$scope.awayTeamName;
+	$scope.awayTeamBadge
+	$scope.awayTeamForm = [];
+	$scope.awayTeamId;
+	$scope.leaveButton = false;
+	$scope.players = [];
 
-}])
+	var matchGet = function(){
+		$http({
+			method: 'get',
+			url: '/api/matches/' + $stateParams.match_id
+		}).success(function(resp){
+			console.log(resp);
+			$scope.homeTeamName = resp.home_team.name;
+			$scope.homeTeamBadge = resp.home_team.badge_url;
+			$scope.homeTeamId = resp.match.home_team_id;
+			console.log($scope.homeTeamId)
+			$scope.awayTeamName = resp.away_team.name;
+			$scope.awayTeamBadge = resp.away_team.badge_url;
+			$scope.awayTeamId = resp.match.away_team_id;
+			console.log($scope.awayTeamId)
+			$scope.players = resp.players;
+			console.log($scope.players)
+			formBuild(resp.home_team.form,resp.away_team.form);
+		})
+	}
+
+	var formBuild = function(homeForm,awayForm){
+		for(var i = 0; i < homeForm.length; i++){
+			if(homeForm[i] == 'w'){
+				$scope.homeTeamForm.push({'background': 'green'});
+			} else if (homeForm[i] == 'd'){
+				$scope.homeTeamForm.push({'background': 'yellow'});
+			} else if (homeForm[i] == 'l'){
+				$scope.homeTeamForm.push({'background': 'red'});
+			}
+		}
+		for(var i = 0; i < awayForm.length; i++){
+			if(awayForm[i] == 'w'){
+				$scope.awayTeamForm.push({'background': 'green'});
+			} else if (awayForm[i] == 'd'){
+				$scope.awayTeamForm.push({'background': 'yellow'});
+			} else if (awayForm[i] == 'l'){
+				$scope.awayTeamForm.push({'background': 'red'});
+			}
+		}
+	}
+
+	var init = function(){
+		matchGet();
+		setTimeout(function(){
+			$scope.leaveButton = true;
+			$scope.$apply();
+		},1)
+	}
+
+	init();
+}]);

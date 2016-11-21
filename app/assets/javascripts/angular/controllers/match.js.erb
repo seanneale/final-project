@@ -10,12 +10,15 @@ app.controller('MatchCtrl', ['$scope','$state','$stateParams','$auth','$location
 	$scope.showMatchEvents = [];
 
 	var i = 0;
+	var flashCount = 0;
 
 	$scope.zones = []
 
 	$scope.showStartGame = true;
 
 	$scope.showGoToResults = false;
+
+	$scope.flashing = false;
 
 	$scope.clock = 0;
 	$scope.homeTeamScore = 0;
@@ -50,8 +53,9 @@ app.controller('MatchCtrl', ['$scope','$state','$stateParams','$auth','$location
 	]
 
 	$scope.startGame = function(){
+		ambient.play();
 		$scope.showStartGame = false;
-		recursive(250);
+		recursive(1000);
 	}
 
 	$scope.goToResults = function(){
@@ -61,6 +65,7 @@ app.controller('MatchCtrl', ['$scope','$state','$stateParams','$auth','$location
 
 // change the setup so that the all events are loaded buut visible then unhide them as the clock ticks
 	var recursive = function(delay){
+		$scope.flashing = false;
 		if(i < $scope.storeMatchEvents.length){
 			setTimeout(function(){
 				$scope.clock = $scope.storeMatchEvents[i].time;
@@ -81,7 +86,13 @@ app.controller('MatchCtrl', ['$scope','$state','$stateParams','$auth','$location
 				udpateZones($scope.storeMatchEvents[i].team_id,$scope.storeMatchEvents[i].possesion_zone);
 				$scope.$apply();
 				i++;
-				recursive(delay);
+				if($scope.showMatchEvents[0].event_type == 4){
+					cheer.play();
+					flash();
+					
+				} else {
+					recursive(delay);
+				}
 			},delay)
 		} else {
 			$scope.showGoToResults = true;
@@ -94,7 +105,7 @@ app.controller('MatchCtrl', ['$scope','$state','$stateParams','$auth','$location
 			method: 'get',
 			url: '/api/matches/' + $stateParams.match_id
 		}).success(function(resp){
-			console.log(resp);
+			// console.log(resp);
 			$scope.homeTeamId = resp.match.home_team_id;
 			$scope.awayTeamId = resp.match.away_team_id;
 			$scope.homeTeamName = resp.home_team.name
@@ -113,6 +124,7 @@ app.controller('MatchCtrl', ['$scope','$state','$stateParams','$auth','$location
 			$scope.awayTeamStyle =	{
 				'background-color': $scope.awayTeamColour1,
 				'color': $scope.awayTeamColour2,
+				'border-color': $scope.awayTeamColour2,
 				'border-width': '2px',
 				'border-style': 'solid',
 				'border-radius': '3px'
@@ -122,12 +134,14 @@ app.controller('MatchCtrl', ['$scope','$state','$stateParams','$auth','$location
 			leagueId = resp.league_id
 			gameTeamId = resp.game_team_id
 			$scope.storeMatchEvents = resp.match_events
+			// console.log($scope.awayTeamColour1)
+			// console.log($scope.awayTeamStyle)
 		})
 	}
 
 	var generateZones = function(){
 		$scope.zones = [];
-		console.log($scope.zones)
+		// console.log($scope.zones)
 		for(var i = 0; i < 5; i++){
 			zone = {};
 			zone.style = {'background-color': $scope.homeTeamColour1};
@@ -150,7 +164,6 @@ app.controller('MatchCtrl', ['$scope','$state','$stateParams','$auth','$location
 			var midpoint = poss_zone;
 		}
 		$scope.zones = [];
-		console.log($scope.zones)
 		for(var i = 0; i < midpoint; i++){
 			zone = {};
 			zone.style = {'background-color': $scope.homeTeamColour1};
@@ -170,10 +183,20 @@ app.controller('MatchCtrl', ['$scope','$state','$stateParams','$auth','$location
 		// find which array features the home_team_id
 		$scope.homeTeamColour1 = resp.home_team.home_colour_1;
 		$scope.homeTeamColour2 = resp.home_team.home_colour_2;
+		if(home_team_id % 20 > 0){
+			home_source_id = home_team_id % 20;
+		} else {
+			home_source_id = 20;
+		}
+		if(away_team_id % 20 > 0){
+			away_source_id = away_team_id % 20;
+		} else {
+			away_source_id = 20;
+		}
 		for(var i = 0; i < kitClashes.length; i++){
-			if(kitClashes[i].indexOf(home_team_id % 20) > -1){
+			if(kitClashes[i].indexOf(home_source_id) > -1){
 				// console.log(kitClashes[i].indexOf(home_team_id));
-				if(kitClashes[i].indexOf(away_team_id % 20) > -1){
+				if(kitClashes[i].indexOf(away_source_id) > -1){
 					$scope.awayTeamColour1 = resp.away_team.away_colour_1;
 					$scope.awayTeamColour2 = resp.away_team.away_colour_2;
 				} else {
@@ -184,8 +207,78 @@ app.controller('MatchCtrl', ['$scope','$state','$stateParams','$auth','$location
 		}
 	}
 
+	var flash = function(){
+		console.log('zxcvbnm');
+		// var state = true;
+		if(flashCount < 40){
+			setTimeout(function(){
+				if($scope.showMatchEvents[0].team_id == $scope.homeTeamId){
+					var style1 = {	
+						'background-color': $scope.homeTeamColour1,
+						'color': $scope.homeTeamColour2,
+						'border-color': $scope.homeTeamColour2,
+						'border-width': '2px',
+						'border-style': 'solid',
+						'border-radius': '3px'
+					}
+					var style2 = {	
+						'background-color': $scope.homeTeamColour2,
+						'color': $scope.homeTeamColour1,
+						'border-color': $scope.homeTeamColour1,
+						'border-width': '2px',
+						'border-style': 'solid',
+						'border-radius': '3px'
+					}
+				} else {
+					var style1 =	{
+						'background-color': $scope.awayTeamColour1,
+						'color': $scope.awayTeamColour2,
+						'border-color': $scope.awayTeamColour2,
+						'border-width': '2px',
+						'border-style': 'solid',
+						'border-radius': '3px'
+					}
+					var style2 =	{
+						'background-color': $scope.awayTeamColour2,
+						'color': $scope.awayTeamColour1,
+						'border-color': $scope.awayTeamColour1,
+						'border-width': '2px',
+						'border-style': 'solid',
+						'border-radius': '3px'
+					}
+				}
+				if(flashCount % 2 == 0){
+					$scope.showMatchEvents[0].style = style2;
+				} else {
+					$scope.showMatchEvents[0].style = style1;
+				}
+				console.log($scope.showMatchEvents[0].style)
+				$scope.$apply();
+				flashCount++;
+				flash();
+			},100)
+		} else {
+			flashCount = 0;
+			// ambient.play();
+			recursive(1000);
+		}
+		// for(var i = 0;  i < 39; i++){
+		// 	setTimeout(function(){
+		// 		if(state){
+		// 			$scope.showMatchEvents[0] = style2;
+		// 		} else {
+		// 			$scope.showMatchEvents[0] = style1;
+		// 		}
+		// 		state = !state;
+		// 		$scope.$apply()
+		// 	}, 100)
+		// }
+	}
+
 	var init = function(){
 		matchGet();
+		var cheer = new Audio('app/audio/Crowd cheer sound effect.mp3');
+		var ambient = new Audio('app/audio/small football crowd by FNC.mp3');
 	}
 
 	init();
