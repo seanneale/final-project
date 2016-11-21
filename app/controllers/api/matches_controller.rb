@@ -1,7 +1,7 @@
 class Api::MatchesController < ApplicationController
 
 	def show
-		MatchWorker.perform_async()
+		# MatchWorker.perform_async()
 		response = {}
 		home_team = {}
 		away_team = {}
