@@ -29,9 +29,9 @@ app.controller('SquadCtrl', ['$scope','$state','$stateParams','$auth','$location
 
 	$scope.changePlayerStatus = function(player){
 		var size = $scope.limitTeamSelection();
-		if(size >= 11){
-			$scope.teamValidationClass = true;
-		}
+		// if(size >= 11){
+		// 	$scope.teamValidationClass = true;
+		// }
 	};
 
 	$scope.limitTeamSelection = function(){
