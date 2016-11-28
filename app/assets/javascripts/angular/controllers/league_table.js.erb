@@ -11,9 +11,9 @@ app.controller('LeagueTableCtrl', ['$scope','$state','$stateParams','$auth','$lo
 			method: 'get',
 			url: '/api/leagues/' + $scope.league_id,
 		}).success(function(resp){
-			// console.log(resp);
+			console.log(resp);
 			$scope.teams = resp.table
-			console.log($scope.teams)
+			// console.log($scope.teams)
 			colourControlledTeam(resp);
 			sourceTeams = resp.source_teams
 			addName();
@@ -23,9 +23,9 @@ app.controller('LeagueTableCtrl', ['$scope','$state','$stateParams','$auth','$lo
 	var colourControlledTeam = function(resp){
 		// find the home color of the controlled team
 		var controlledId = $stateParams.game_team_id
-		var homeTeamColour = resp.source_teams[controlledId - 1 % 20].home_colour_1
+		var homeTeamColour = resp.source_teams[(controlledId - 1) % 20].home_colour_1
 		if(homeTeamColour == 'white'){
-			homeTeamColour = sourceTeams[controlledId - 1 - gameSourceTeamDiff].home_colour_2;
+			homeTeamColour = resp.source_teams[(controlledId - 1) % 20].home_colour_2;
 		}
 		console.log(homeTeamColour)
 		// colour the background different colours
