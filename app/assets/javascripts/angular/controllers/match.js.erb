@@ -53,7 +53,7 @@ app.controller('MatchCtrl', ['$scope','$state','$stateParams','$auth','$location
 	]
 
 	$scope.startGame = function(){
-		ambient.play();
+		// ambient.play();
 		$scope.showStartGame = false;
 		recursive(1000);
 	}
@@ -87,7 +87,7 @@ app.controller('MatchCtrl', ['$scope','$state','$stateParams','$auth','$location
 				$scope.$apply();
 				i++;
 				if($scope.showMatchEvents[0].event_type == 4){
-					cheer.play();
+					// cheer.play();
 					flash();
 					
 				} else {
@@ -277,8 +277,8 @@ app.controller('MatchCtrl', ['$scope','$state','$stateParams','$auth','$location
 
 	var init = function(){
 		matchGet();
-		var cheer = new Audio('app/audio/Crowd cheer sound effect.mp3');
-		var ambient = new Audio('app/audio/small football crowd by FNC.mp3');
+		// var cheer = new Audio('app/audio/Crowd cheer sound effect.mp3');
+		// var ambient = new Audio('app/audio/small football crowd by FNC.mp3');
 	}
 
 	init();

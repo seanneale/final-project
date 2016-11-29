@@ -59,7 +59,7 @@ class AutopickWorker
 		# 		puts 'do nothing'
 			end
 		end
-		MatchWorker.perform_async()
+		# MatchWorker.perform_async()
 
 	end
 

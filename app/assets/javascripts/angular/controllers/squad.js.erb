@@ -29,9 +29,9 @@ app.controller('SquadCtrl', ['$scope','$state','$stateParams','$auth','$location
 
 	$scope.changePlayerStatus = function(player){
 		var size = $scope.limitTeamSelection();
-		if(size >= 11){
-			$scope.teamValidationClass = true;
-		}
+		// if(size >= 11){
+		// 	$scope.teamValidationClass = true;
+		// }
 	};
 
 	$scope.limitTeamSelection = function(){
@@ -91,6 +91,7 @@ app.controller('SquadCtrl', ['$scope','$state','$stateParams','$auth','$location
 
 	// checking that each position has at least one player in it
 	var positionCheck = function(position){
+		console.log(position)
 		if(position != 'GK'){
 			for(var i = 0; i < $scope.squad.length; i++){
 				if($scope.squad[i].position == position){

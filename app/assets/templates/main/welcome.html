@@ -9,7 +9,7 @@
 						<a ui-sref="header.squad({game_team_id: {{league.game_team_id}}, league_id: {{league.id}} })">
 							<button class="btn btn-primary" ng-click="squadBuild($index)" ng-style='league.style'>
 								<div class="col-xs-3">
-									<img src='{{league.badge_url}}'>
+									<img ng-src='{{league.badge_url}}'>
 								</div>
 								<div class="col-xs-9">
 									<h4>{{league.league_name}}</h4>
