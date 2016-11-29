@@ -1,7 +1,7 @@
 class Api::MatchesController < ApplicationController
 
 	def show
-		MatchWorker.perform_async()
+		# MatchWorker.perform_async()
 		response = {}
 		home_team = {}
 		away_team = {}
@@ -12,9 +12,11 @@ class Api::MatchesController < ApplicationController
 		response[:league_id] = Match.find(params[:id]).round.league[:id]
 		user_id = Match.find(params[:id]).round.league.users[0][:id]
 		response[:game_team_id] = Match.find(params[:id]).round.league.game_teams.find_by(user_id: user_id)[:id]
+		
 		current_round_id = Match.find(params[:id]).round[:id]
 		form_round_start = current_round_id -1
-		current_round_id > 6 ? form_round_end = current_round_id - 6 : form_round_end = 1
+		form_round_end = (Match.find(params[:id]).round[:league_id] - 1) * 38 + 1
+		current_round_id % 38 > 6 ? form_round_end = current_round_id - 6 : (Match.find(params[:id]).round[:league_id] - 1) * 38 + 1
 		
 		home_team_id = Match.find(params[:id]).home_team_id
 		home_team[:name] = GameTeam.find(home_team_id).source_team[:name]

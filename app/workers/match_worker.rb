@@ -1,24 +1,31 @@
 class MatchWorker
 	include Sidekiq::Worker
 
-	def perform
-		active_rounds = Round.where(active: true)
-		# for each active round
-		active_rounds.each do |round|
-			# check each unplayed game and see if it can be played 
-			ready_matches = round.matches.where(played: false, home_team_picked: true, away_team_picked: true)
-			ready_matches.each do |match|
-				if !match.played
-					Match.find(match[:id]).update(played: true)
-					puts match[:id]
-					# play the ready games
-					play_match match[:id]
-					# set them to played
-				end
-			end
-
+	def perform id
+		match = Match.find(id)
+		if !match.played && match.home_team_picked && match.away_team_picked
+ 			puts match[:id]
+			play_match id
+			Match.find(match[:id]).update(played: true)
 		end
+		# active_rounds = Round.where(active: true)
+		# # for each active round
+		# active_rounds.each do |round|
+		# 	# check each unplayed game and see if it can be played 
+		# 	ready_matches = round.matches.where(played: false, home_team_picked: true, away_team_picked: true)
+		# 	ready_matches.each do |match|
+		# 		if !match.played
+		# 			# play the ready games
+		# 			play_match match[:id]
+		# 			# set them to played
+		# 		end
+		# 	end
+		# end
 
+	end
+
+	def test
+		puts 'qqzaqwsxedcrgbyhunjimko,lpomnhbgfcdszaZsdcfgbhjninhugvftdxeazw'
 	end
 
 	def play_match id
