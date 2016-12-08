@@ -10,6 +10,7 @@ app.controller('SquadCtrl', ['$scope','$state','$stateParams','$auth','$location
 			method: 'GET',
 			url: '/api/game_teams/' + id
 		}).success(function(resp){
+			console.log(resp)
 			$scope.matchId = resp.match.id;
 			playersBuild(resp);
 		})
@@ -32,6 +33,7 @@ app.controller('SquadCtrl', ['$scope','$state','$stateParams','$auth','$location
 		// if(size >= 11){
 		// 	$scope.teamValidationClass = true;
 		// }
+		console.log($scope.players)
 	};
 
 	$scope.limitTeamSelection = function(){
@@ -51,6 +53,8 @@ app.controller('SquadCtrl', ['$scope','$state','$stateParams','$auth','$location
 		var source_players = resp.source_players;
 		for(var i = 0; i < game_players.length; i ++){
 			if(source_players[i].squad_number){
+				console.log(source_players[i].id)
+				console.log(game_players[i].source_player_id)
 				player = {}
 				player.id = game_players[i].id
 				player.name = source_players[i].first_name + ' ' + source_players[i].last_name

@@ -9,6 +9,7 @@ app.controller('WelcomeCtrl', ['$scope','$auth','$location', '$http','$state','$
 	var leaguesBuild = function(){
 		if ($scope.user.id) {
 			var id = $scope.user.id
+			console.log(id);
 			$http({
 				method: 'GET',
 				url: '/api/user/' + id + '/leagues'

@@ -10,9 +10,9 @@ class Api::GameTeamsController < ApplicationController
 		@current_team = {
 			match: match,
 			game_team: GameTeam.find(params[:id]),
-			game_players: GameTeam.find(params[:id]).game_players,
+			game_players: GameTeam.find(params[:id]).game_players.order('id'),
 			source_team: GameTeam.find(params[:id]).source_team,
-			source_players: GameTeam.find(params[:id]).source_team.source_players
+			source_players: GameTeam.find(params[:id]).source_team.source_players.order('id')
 		}
 		render json: @current_team
 	end

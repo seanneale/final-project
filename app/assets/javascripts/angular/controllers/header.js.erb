@@ -21,8 +21,6 @@ app.controller('HeaderCtrl', ['$scope','$state','$stateParams','$auth','$locatio
 			method: 'get',
 			url: '/api/leagues/' + $scope.league_id
 		}).success(function(resp){
-			console.log('resp');
-			console.log(resp);
 			homeColour1 = resp.source_teams[($scope.game_team_id - 1) % 20].home_colour_1;
 			homeColour2 = resp.source_teams[($scope.game_team_id - 1) % 20].home_colour_2;
 			$scope.teamName = resp.source_teams[($scope.game_team_id - 1) % 20].name
