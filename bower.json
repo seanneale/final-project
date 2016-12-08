@@ -1,0 +1,31 @@
+{
+  "name": "final-project",
+  "version": "0.0.1",
+  "main": "",
+  "private": true,
+  "dependencies": {
+    "angular": "^1.5.x",
+    "angular-ui-router": "^0.3.2",
+    "ng-token-auth": "^0.0.29",
+    "bootstrap": "^3.3.7",
+    "angular-bootstrap": "^2.2.0",
+    "angular-resource": "^1.5.x"
+  },
+
+"resolutions": {
+   "angular": "1.5.x"
+ },
+  "homepage": "https://github.com/seanneale/final-project",
+  "authors": [
+    "seanneale <sean_neale@hotmail.co.uk>"
+  ],
+  "description": "",
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}

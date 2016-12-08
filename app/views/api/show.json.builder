@@ -1,0 +1,1 @@
+json.game_team @current_team

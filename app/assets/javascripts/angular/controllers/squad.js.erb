@@ -1,0 +1,167 @@
+app.controller('SquadCtrl', ['$scope','$state','$stateParams','$auth','$location','$http','$uibModal', function($scope,$state,$stateParams,$auth,$location,$http,$uibModal){
+
+	$scope.players = [];
+
+	$scope.matchId
+
+	var squadBuild = function(){
+		var id = $stateParams.game_team_id;
+		$http({
+			method: 'GET',
+			url: '/api/game_teams/' + id
+		}).success(function(resp){
+			console.log(resp)
+			$scope.matchId = resp.match.id;
+			playersBuild(resp);
+		})
+	}
+
+	var scopePlayersSort = function(){
+		$scope.players.sort(function(a,b){
+			if(a.squad_no < b.squad_no){
+				return -1;
+			} 
+			if(a.squad_no > b.squad_no){
+				return 1;
+			}
+			return 0;
+		})
+	}
+
+	$scope.changePlayerStatus = function(player){
+		var size = $scope.limitTeamSelection();
+		// if(size >= 11){
+		// 	$scope.teamValidationClass = true;
+		// }
+		console.log($scope.players)
+	};
+
+	$scope.limitTeamSelection = function(){
+		var counter = 0;
+		for(var i = 0; i < $scope.players.length; i++){
+			if($scope.players[i].picked){
+				counter++;
+			}
+		}
+		return counter;
+	};
+
+	$scope.teamValidationClass = false;
+
+	var playersBuild = function(resp){
+		var game_players = resp.game_players;
+		var source_players = resp.source_players;
+		for(var i = 0; i < game_players.length; i ++){
+			if(source_players[i].squad_number){
+				console.log(source_players[i].id)
+				console.log(game_players[i].source_player_id)
+				player = {}
+				player.id = game_players[i].id
+				player.name = source_players[i].first_name + ' ' + source_players[i].last_name
+				player.squad_no = source_players[i].squad_number
+				if(source_players[i].position == 1) {
+					player.position = 'GK';
+				} else if (source_players[i].position == 2) {
+					player.position = 'D';
+				} else if (source_players[i].position == 3) {
+					player.position = 'M';
+				} else if (source_players[i].position == 4) {
+					player.position = 'F';
+				}
+				if(source_players[i].position == 1){
+					player.gk_a = source_players[i].goalkeeping_ability.toFixed(1)
+				} else {
+					player.d_a = source_players[i].defending_ability.toFixed(1)
+					player.f_a = source_players[i].attacking_ability.toFixed(1)
+				}
+				player.apps = game_players[i].appearances
+				player.goals = game_players[i].season_goals_scored
+				var pass_percent = game_players[i].season_succesful_passes / game_players[i].season_attempted_passes
+				player.pass = (pass_percent * 100).toFixed(1)
+				player.assists = game_players[i].season_assists
+				player.picked = false;
+				player.image = source_players[i].image_url
+				createPlayerImage(player.image);
+				$scope.players.push(player)
+			}
+		}
+		scopePlayersSort();
+	}
+
+	var createPlayerImage = function(image){
+		img = new Image();
+		img.src = image
+	}
+
+	// checking that each position has at least one player in it
+	var positionCheck = function(position){
+		console.log(position)
+		if(position != 'GK'){
+			for(var i = 0; i < $scope.squad.length; i++){
+				if($scope.squad[i].position == position){
+					return true
+				}
+			}
+		} else {
+			gkCheck = []
+			for(var i = 0; i < $scope.squad.length; i++){
+				if($scope.squad[i].position == 'GK'){
+					gkCheck.push($scope.squad[i]);
+				}
+			}
+			if (gkCheck.length == 1) {
+				return true
+			}
+		} 
+	}
+
+	$scope.submitTeamSelection =function(){
+		$scope.squad = []
+		$scope.squad_ids = []
+		// add requirement for eleven players, one in each position
+		for(var i = 0; i < $scope.players.length; i++){
+			if($scope.players[i].picked){
+				$scope.squad.push($scope.players[i]);
+				$scope.squad_ids.push($scope.players[i].id)
+			}
+		}
+		if($scope.squad.length == 11 && positionCheck('GK') && positionCheck('D') && positionCheck('M') && positionCheck('F')){
+			waitingModal();
+			console.log($scope.squad_ids);
+			var id = $stateParams.game_team_id
+			$http({
+				method: 'post',
+				url: '/api/game_teams/' + id + '/match_stats',
+				params: $scope.squad_ids
+			}).success(function(){
+				$state.go('pre_match', { match_id: $scope.matchId});
+			})
+		} else {
+			console.log('put some error reporting in here')
+		}
+	}
+
+	// var matchCheck =function(){
+	// 	var check = false
+	// 	while(!check){
+	// 		$http({
+	// 			method: 'get',
+	// 			url: '/api/matches/' + $scope.matchId
+	// 		}).success(function(resp){
+	// 			check = resp.match.played;
+	// 		})
+	// 	}
+	// };
+
+	var waitingModal = function(){
+		$uibModal.open({
+			templateUrl: "<%= asset_path('main/waiting_modal.html') %>"
+	    });
+	};
+
+	var init = function(){
+		squadBuild();
+	}
+
+	init()
+}])

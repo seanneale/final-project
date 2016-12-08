@@ -1,0 +1,166 @@
+app.controller('FixturesCtrl', ['$scope','$state','$stateParams','$auth','$location','$http', function($scope,$state,$stateParams,$auth,$location,$http){
+
+	// check all ten games if they are all played then show them as results not fixtures
+
+	$scope.league_id = $stateParams.league_id;
+
+	$scope.fixtures = [];
+
+	$scope.rounds= [];
+
+	$scope.activeWeek = 0;
+
+	$scope.showWeek = 0;
+
+	$scope.showFixtures = []
+
+	$scope.nextWeekDisable = false;
+
+	$scope.prevWeekDisable = false;
+
+	$scope.date
+
+	$scope.fixturesShow = true
+
+	var sourceTeams
+
+	var gameSourceTeamDiff
+
+	var getFixtures = function(){
+		$http({
+			method: 'get',
+			url: '/api/leagues/' + $scope.league_id,
+		}).success(function(resp){
+			console.log(resp)
+			findActiveRound(resp.rounds);
+			$scope.rounds = resp.rounds
+			$scope.date = $scope.rounds[$scope.showWeek].date
+			$scope.fixtures = resp.fixtures;
+			sourceTeams = resp.source_teams
+			gameSourceTeamDiff = findingMinID(resp.table)
+			colourControlledTeam();
+			addName();
+			$scope.showFixtures = $scope.fixtures[$scope.showWeek]
+			resultsCheck();
+			nextWeekBtnCheck();
+			prevWeekBtnCheck();
+		})
+	}
+
+	var resultsCheck = function(){
+		counter = 0;
+		for(var i = 0; i < $scope.showFixtures.length; i++){
+			if($scope.showFixtures[i].played == true){
+				counter++;
+			}
+		}
+		if(counter == 10){
+			$scope.fixturesShow = false;
+		} else {
+			$scope.fixturesShow = true;
+		}
+	}
+
+	var findActiveRound = function(rounds){
+		for(var i = 0; i < rounds.length; i++){
+			if(rounds[i].active){
+				$scope.activeWeek = i;
+				$scope.showWeek = i;
+			}
+		}
+	}
+
+	$scope.changeWeekPrev = function(){
+		if($scope.showWeek > 0){
+			$scope.showWeek -= 1;
+			$scope.showFixtures = $scope.fixtures[$scope.showWeek]
+		}
+		resultsCheck();
+		nextWeekBtnCheck();
+		prevWeekBtnCheck();
+	}
+
+	$scope.changeWeekNext = function(){
+		if($scope.showWeek < 37){
+			$scope.showWeek += 1;
+			$scope.showFixtures = $scope.fixtures[$scope.showWeek]
+		}
+		resultsCheck();
+		nextWeekBtnCheck();
+		prevWeekBtnCheck();
+	}
+
+	var nextWeekBtnCheck = function(){
+		if($scope.showWeek >= 37){
+			$scope.nextWeekDisable = true;
+		} else {
+			$scope.nextWeekDisable = false;
+		}
+	}
+
+	var prevWeekBtnCheck = function(){
+		if($scope.showWeek <= 0){
+			$scope.prevWeekDisable = true;
+		} else {
+			$scope.prevWeekDisable = false;
+		}
+	}
+
+	var colourControlledTeam = function(){
+		// find the home team colour 1 of the controlled team
+		var controlledId = $stateParams.game_team_id;
+		console.log(controlledId);
+		var homeTeamColour = sourceTeams[controlledId - 1 - gameSourceTeamDiff].home_colour_1;
+		if(homeTeamColour == 'white'){
+			homeTeamColour = sourceTeams[controlledId - 1 - gameSourceTeamDiff].home_colour_2;
+		}
+		for(var i = 0; i < $scope.fixtures.length; i++){
+			for(var j =0; j < $scope.fixtures[i].length; j++){
+				if($scope.fixtures[i][j].home_team_id == controlledId){
+					$scope.fixtures[i][j].homeStyle = {'color': homeTeamColour}
+				} else {
+					$scope.fixtures[i][j].homeStyle = {'color': 'white'}
+				}
+				if($scope.fixtures[i][j].away_team_id == controlledId){
+					$scope.fixtures[i][j].awayStyle = {'color': homeTeamColour}
+				} else {
+					$scope.fixtures[i][j].awayStyle = {'color': 'white'}
+				}
+			}
+		}
+	}
+
+	var addName = function(){
+		for(var i = 0; i < $scope.fixtures.length; i++){
+			// console.log('Round: ' + i)
+			// console.log($scope.fixtures[i])
+			for(var j = 0; j < $scope.fixtures[i].length; j++){
+				// console.log($scope.fixtures[i][j].id);
+				$scope.fixtures[i][j].home_team_name = findTeamName($scope.fixtures[i][j].home_team_id - gameSourceTeamDiff)
+				$scope.fixtures[i][j].away_team_name = findTeamName($scope.fixtures[i][j].away_team_id - gameSourceTeamDiff)
+			}
+		}
+	}
+
+	var findTeamName = function(id){
+		// console.log(id)
+		// find the lowest id value of the game_team id
+		return sourceTeams[id-1].name;
+	}
+
+	var findingMinID = function(gameTeamArray){
+		min = 999999999999999
+		for(var i = 0; i < gameTeamArray.length; i++){
+			if(gameTeamArray[i].id < min){
+				min = gameTeamArray[i].id
+			}
+		}
+		return min - 1
+	}
+
+	var init = function(){
+		getFixtures();
+	}
+
+	init()
+}])

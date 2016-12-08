@@ -1,0 +1,20 @@
+app.controller('LoginPagesCtrl', ['$scope','$auth','$rootScope', "$http", function($scope,$auth,$rootScope,$http){
+	
+	$scope.logout = function () {
+		$auth.signOut().then(function(resp) {
+			console.log(resp);
+		}).catch(function(resp) {
+			console.log(resp);
+		});
+	};
+
+	$scope.facebookLogin = function(){
+		$auth.authenticate('facebook');
+	};
+
+	$rootScope.$on('auth:login-success', function(ev, user){
+		// alert('Welcome', user.email)
+	})
+
+
+}]);

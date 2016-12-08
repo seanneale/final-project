@@ -1,0 +1,63 @@
+app.controller('HeaderCtrl', ['$scope','$state','$stateParams','$auth','$location','$http', function($scope,$state,$stateParams,$auth,$location,$http){
+
+	$scope.game_team_id = $state.params.game_team_id;
+	$scope.league_id = $state.params.league_id;
+	$scope.navbarStyle = {};
+	$scope.aStyle = {}
+	var homeColour1 = "";
+	var homeColour2 = "";
+	$scope.teamName = "";
+
+	$scope.logout = function () {
+		$auth.signOut().then(function(resp) {
+			console.log(resp);
+		}).catch(function(resp) {
+			console.log(resp);
+		});
+	};
+
+	var gettingColours = function(){
+		$http({
+			method: 'get',
+			url: '/api/leagues/' + $scope.league_id
+		}).success(function(resp){
+			homeColour1 = resp.source_teams[($scope.game_team_id - 1) % 20].home_colour_1;
+			homeColour2 = resp.source_teams[($scope.game_team_id - 1) % 20].home_colour_2;
+			$scope.teamName = resp.source_teams[($scope.game_team_id - 1) % 20].name
+			console.log($scope.teamName);
+			$scope.aStyle = {'color': homeColour2}
+			$scope.navbarStyle = {	'background': homeColour1, 'border': homeColour1 +' 0 solid', 'border-bottom': homeColour2 + ' 3px solid'}
+		})
+	}
+
+	var init = function () {
+		gettingColours();
+	};
+
+	init();
+
+	// $scope.$watch('user.id', function (nv, ov) {
+	// 	test(); 
+	// });
+
+	// $scope.leagues = []
+
+	// var leaguesBuild = function(){
+	// 	if ($scope.user.id) {
+	// 		var id = $scope.user.id
+	// 		$http({
+	// 			method: 'GET',
+	// 			url: '/api/user/' + id + '/leagues'
+	// 		}).success(function(resp){
+	// 			$scope.leagues = []
+	// 			for(var i = 0; i < resp.leagues.length; i++){
+	// 				$scope.leagues.push(resp.leagues[i]);
+	// 				$scope.leagues[i].game_team_id = resp.game_teams[i].id;
+	// 				console.log($scope.leagues[i].game_team_id);
+	// 			}
+	// 		})
+	// 	}
+	// };
+
+
+}])

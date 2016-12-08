@@ -1,0 +1,15 @@
+app.controller('SignUpCtrl', ['$scope','$auth','$location','$state', function($scope,$auth,$location,$state){
+	$scope.signup = function () {
+		$auth.submitRegistration($scope.registrationForm).
+		then(function(resp) {
+			// handle success response
+			console.log(resp);
+			// redirect back to root when registration succesfull 
+			$state.go('welcome');
+		}).
+		catch(function(resp) {
+			// handle error response
+			console.log(resp);
+		});
+	};
+}])

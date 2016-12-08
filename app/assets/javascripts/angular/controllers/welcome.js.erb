@@ -1,0 +1,44 @@
+app.controller('WelcomeCtrl', ['$scope','$auth','$location', '$http','$state','$stateParams', function($scope,$auth,$location,$http,$state,$stateParams){
+
+	$scope.$watch('user.id', function (nv, ov) {
+		leaguesBuild(); 
+	});
+
+	$scope.leagues = []
+
+	var leaguesBuild = function(){
+		if ($scope.user.id) {
+			var id = $scope.user.id
+			console.log(id);
+			$http({
+				method: 'GET',
+				url: '/api/user/' + id + '/leagues'
+			}).success(function(resp){
+				console.log(resp);
+				$scope.leagues = []
+				for(var i = 0; i < resp.leagues.length; i++){
+					$scope.leagues.push(resp.leagues[i]);
+					$scope.leagues[i].game_team_id = resp.game_teams[i].id;
+					$scope.leagues[i].badge_url = resp.badge_urls[i]
+					$scope.leagues[i].next_game = resp.next_games[i]
+					$scope.leagues[i].style = {
+												'background': resp.home_colour_1s[i],
+												'color': resp.home_colour_2s[i],
+												'border': resp.home_colour_2s[i] + ' 2px solid'
+											}
+				}
+				console.log($scope.leagues)
+			})
+		}
+	};
+
+	var init = function () {
+		leaguesBuild();
+	};
+
+	init();
+}])
+
+
+
+// when I click on a league I need to go to the squad page and load the user's team info

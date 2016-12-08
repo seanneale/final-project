@@ -1,0 +1,313 @@
+// Place all the styles related to the main_pages controller here.
+// They will automatically be included in application.css.
+// You can use Sass (SCSS) here: http://sass-lang.com/
+
+@font-face {
+    font-family: 'premier_leagueregular';
+    src: asset-url('premier_league_after_2008-webfont.woff2') format('woff2'),
+         asset-url('premier_league_after_2008-webfont.woff') format('woff'),
+         asset-url('premier_league_after_2008.ttf') format('ttf');
+    font-weight: normal;
+    font-style: normal;
+}
+
+html {
+	background: url('http://img2.thejournal.ie/inline/2757687/original/?width=630&version=2757687');
+	background-size: cover;
+}
+
+body {
+	color: white;
+	font-family: "Trebuchet MS", Helvetica, sans-serif;
+	background: rgba(0,0,0,0.5);
+}
+
+.left {
+	text-align: left;
+}
+.center {
+	text-align: center;
+}
+.right {
+	text-align: right;
+}
+#landing, #login, #signup {
+	padding-top: 100px;
+	height: 1200px;
+	text-align: center;
+	img {
+		width: 350px;
+	}
+	button {
+		background: rgb(102,153,0);
+		border: white 2px solid;
+		width: 200px
+	}
+	h1 {
+		font-size: 60px;
+		span {
+			font-size: 80px;
+		}
+	}
+	.form-group {
+		/*display: inline-block;*/
+	}
+	label {
+		font-size: 20px;
+		float: left;
+	}
+}
+
+
+.badgeImage {
+	width: 200px;
+	height: 200px;
+}
+
+#matchScreen {
+	height: 1200px;
+	padding-bottom: 300px;
+/*	#homeTeam {
+		border-radius: 3px;
+		background: mediumblue;
+		color: goldenrod;
+		border: goldenrod 2px solid;
+	}
+	#awayTeam {
+		border-radius: 3px;
+		background: red;
+		color: white;
+		border: white 2px solid;
+	}
+*/	.left {
+		text-align: left;
+	}
+	.center {
+		text-align: center;
+	}
+	.right {
+		text-align: right;
+	}
+	#scoreBoard {
+		padding-top: 25px;
+		font-size: 40px;
+		img {
+			height: 45px;
+		}
+	}
+	#possessionTracker {
+		margin: 0 auto;
+		margin-top: 25px;
+		border: black solid 10px;
+		border-radius: 10px;
+		height: 70px;
+		width: 920px;
+	}
+	.zones {
+		width: 100px;
+		height: 50px;
+		display: block;
+		float: left;
+		text-align: center;
+		line-height: 50px;
+		img {
+			height: 40px;
+		}
+	}
+	#matchScroll {
+		padding: 30px;
+		li {
+			margin: 2px;
+			padding-left: 10px;
+			list-style-type: none;
+			font-size: 20px;
+			/*border: white 2px solid;*/
+		}
+		ul {
+			padding-left: 0;
+		}
+		button {
+			background: rgb(102,153,0);
+			border: white 2px solid;
+			font-size: 20px;
+			margin: 10px;
+		}
+		#buttons {
+			height: 60px;
+		}
+	}
+	.teamSheet {
+		padding: 30px;
+		margin-top: 25px;
+		margin-bottom: 25px;
+		li {
+			list-style-type: none;
+			font-size: 20px;
+		}
+		ul {
+			padding-left: 0;
+		}
+	}
+}
+
+#fixturePage {
+	height: 1200px;
+	font-size: 30px;
+	.left {
+		text-align: left;
+	}
+	.center {
+		text-align: center;
+	}
+	.right {
+		text-align: right;
+	}
+	button {
+		background: rgb(102,153,0);
+		border: white 2px solid;
+	}
+	button:focus {
+		background: rgb(102,153,0);
+		border: white 2px solid;
+	}
+	h3 {
+		font-size: 35px;
+	}
+	#next {
+		float: right;
+	}
+	#previous {
+		float: left;
+	}
+}
+
+#leagueTable {
+	table {
+		font-size: 20px;
+	}
+}
+
+#squadPage {
+	padding-bottom: 200px;
+	#squad {
+		font-size: 14px;
+		th {
+			padding: 0 5px;
+		}
+	}
+	#teamDisplay {
+		background: url('images/football_pitch-wallpaper-1920x1200.jpg');
+		/*height: 750px;*/
+		.position {
+			height: 170px;
+		}
+		ul {
+			li {
+				list-style-type: none;
+				margin: 5px;
+				max-width: 125px;
+				display: inline-block;
+				p {
+					max-width: 150px;
+				}
+				div {
+					display: inline-block;
+				}
+			}
+		}
+		.playerImage {
+			max-width: 100px;
+		}
+	}
+	button {
+		background: rgb(102,153,0);
+		border: white 2px solid;
+		font-size: 25px;
+	}
+}
+
+#navbar {
+	/*background: mediumblue;*/
+	/*border: mediumblue 1px solid;*/
+	/*border-bottom: goldenrod 3px solid;*/
+	border-radius: 0;
+	a {
+		/*color: goldenrod;*/
+	}
+}
+
+#welcomePage {
+	height: 1200px;
+	h1 {
+		font-size: 60px;
+		text-align: center;
+	}
+	#createNew {
+		background: rgb(102,153,0);
+		border:  white solid 2px;
+	}
+	button {
+		margin: 10px;
+		width: 500px;
+		height: 100px;
+		h4 {
+			text-overflow: ellipsis;
+		}
+	}
+	li {
+		list-style-type: none;
+		display: inline;
+		img {
+			height: 75px;
+		}
+	}
+}
+
+#preMatchScreen {
+	button {
+		background: rgb(102,153,0);
+		border: white 2px solid;
+	}
+	.form {
+		border-radius: 50%;
+		height: 50px;
+		width: 50px;
+		border: white 3px solid;
+		display: inline-block;
+	}
+	img {
+		height: 250px;
+	}
+	#teamDisplay {
+		background: url('images/football_pitch-wallpaper-1920x1200.jpg');
+		/*height: 750px;*/
+		.position {
+			height: 170px;
+		}
+		ul {
+			li {
+				list-style-type: none;
+				margin: 5px;
+				max-width: 125px;
+				display: inline-block;
+				p {
+					max-width: 150px;
+				}
+				div {
+					display: inline-block;
+				}
+			}
+		}
+		#forms {
+			margin: 20px 0;
+		}
+		.playerImage {
+			width: 100px;
+			height: 125px;
+		}
+		#homeBadge {
+			float: right;
+		}
+	}
+
+}

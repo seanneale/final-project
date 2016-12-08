@@ -1,0 +1,115 @@
+'use strict'; // Make sure you don't have syntax errors
+
+// var app = angular.module('appName', ['oneDependency']);
+var app = angular.module('final-project', ['ui.router','ng-token-auth','ui.bootstrap']);
+
+app.config(['$stateProvider', '$urlRouterProvider','$authProvider', 'URL_CONSTANT', function($stateProvider, $urlRouterProvider, $authProvider, URL_CONSTANT) {
+	$urlRouterProvider.otherwise('/');
+
+	// Configure Angular Routes
+	$stateProvider
+	
+	//static page
+	.state({
+		name: 'index',
+		url: '/',
+		templateUrl: "<%= asset_path('login_pages/index.html') %>",
+		controller: 'LoginPagesCtrl'
+	})
+
+	//login to app
+	.state({
+		name: 'signup',
+		url: '/signup',
+		templateUrl: "<%= asset_path('auth/signup.html') %>",
+		controller: 'SignUpCtrl'
+	})
+
+	.state({
+		name: 'login',
+		url: '/login',
+		templateUrl: "<%= asset_path('auth/login.html') %>",
+		controller: 'LoginCtrl'
+	})
+
+	//landing page after login
+	.state({
+		name: 'welcome',
+		url: '/welcome',
+		templateUrl: "<%= asset_path('main/welcome.html') %>",
+		controller: 'WelcomeCtrl'
+	})
+
+	//create new league
+	.state({
+		name: 'create_new',
+		url: '/create_new',
+		templateUrl: "<%= asset_path('main/create_new.html') %>",
+		controller: 'CreateNewCtrl'
+	})
+
+	//match screen
+	.state({
+		name: 'match',
+		url: '/match/:match_id',
+		templateUrl: "<%= asset_path('main/match.html') %>",
+		controller: 'MatchCtrl'
+	})
+
+
+	.state({
+		name: 'header',
+		abstract: true,
+		templateUrl: "<%= asset_path('main/header.html') %>",
+		controller: 'HeaderCtrl'
+	})
+
+	//show squad
+	.state({
+		name: 'header.squad',
+		url: '/squad/:game_team_id/:league_id',
+		templateUrl: "<%= asset_path('main/squad.html') %>",
+		controller: 'SquadCtrl'
+	})
+
+	//show league table
+	.state({
+		name: 'header.league_table',
+		url: '/league_table/:game_team_id/:league_id',
+		templateUrl: "<%= asset_path('main/league_table.html') %>",
+		controller: 'LeagueTableCtrl'
+	})
+
+	//show fixtures and results
+	.state({
+		name: 'header.fixtures',
+		url: '/fixtures/:game_team_id/:league_id',
+		templateUrl: "<%= asset_path('main/fixtures.html') %>",
+		controller: 'FixturesCtrl'
+	})
+
+	//show stats
+	.state({
+		name: 'header.stats',
+		url: '/stats/:league_id',
+		templateUrl: "<%= asset_path('main/stats.html') %>",
+		controller: 'StatsCtrl'
+	})
+
+	// prematch screen
+	.state({
+		name: 'pre_match',
+		url: '/pre_match/:match_id',
+		templateUrl: "<%= asset_path('main/pre_match.html') %>",
+		controller: 'PreMatchCtrl'
+	})
+
+    $authProvider.configure({
+		// By default, you only need to configure apiUrl
+		// Note that if you put a '/' at the end of the link, there will be errors when calling the api
+		apiUrl: URL_CONSTANT.apiUrl,
+		authProviderPaths: {
+			facebook: '/auth/facebook' // <-- note that this is different than what was set with github
+		}
+    })
+}]);
