@@ -6,6 +6,8 @@ app.controller('CreateNewCtrl', ['$scope','$auth','$location',"$http",'$state','
 
 	$scope.stageView = true
 
+	$scope.building = false
+
 	var getTeams = function(){
 		$http({
 			method: 'get',
@@ -18,12 +20,15 @@ app.controller('CreateNewCtrl', ['$scope','$auth','$location',"$http",'$state','
 	$scope.saveLeagueName = function(){
 		if($scope.leagueName.length > 4){
 			$scope.stageView = false;
+			$scope.building = true;
 		}
 	}
 
 	$scope.teamChoice = function(index){
 		// waitingModal.$promise.then(waitingModal.show);
+		$scope.building = false;
 		waitingModal();
+		console.log('sending');
 		var teamChoice = $scope.teams[index].id;
 		var id = $scope.user.id
 		console.log(id)

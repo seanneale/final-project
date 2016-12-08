@@ -12,7 +12,7 @@
 		</div>
 	</div>
 
-	<div class="row" id="teamsDisplay" ng-hide="stageView">
+	<div class="row" id="teamsDisplay" ng-show="building">
 		<div class="col-xs-3" ng-repeat="team in teams" ng-click="teamChoice($index)">
 			<img ng-src="{{team.badge_url}}" class="img-responsive badgeImage">
 			<h5>{{team.name}}</h5>
